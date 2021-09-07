@@ -12,8 +12,6 @@ namespace PoC_Thomas.ViewModels
     public class CharacterViewModel : BaseViewModel
     {
         public Command CmdSave { get; set; }
-        public CharacterEntity CharacterEntity { get; set; }
-
 
 
         public CharacterViewModel(INavigationService navigationService) : base(navigationService)
@@ -29,7 +27,8 @@ namespace PoC_Thomas.ViewModels
 
             if (parameters.ContainsKey("character"))
             {
-                Character = parameters.GetValue<CharacterDownDTO>("character");
+                // Character = parameters.GetValue<CharacterDownDTO>("character");
+                Character = parameters.GetValue<CharacterEntity>("character");
             }
         }
         #endregion
@@ -43,17 +42,7 @@ namespace PoC_Thomas.ViewModels
 
             try
             {
-                this.CharacterEntity = new CharacterEntity()
-                {
-                    Id = _character.Id,
-                    IdCreator = App.UserId,
-                    Name = _character.Name,
-                    Image = _character.Image,
-                    Species = _character.Species,
-                    Origin = _character.Origin.Name
-                };
-
-                string query = "SELECT * FROM CharacterEntity WHERE CharacterEntity.Id =" + this.CharacterEntity.Id + " AND CharacterEntity.IdCreator = " + this.CharacterEntity.IdCreator;
+                string query = "SELECT * FROM CharacterEntity WHERE CharacterEntity.Id =" + this.Character.Id + " AND CharacterEntity.IdCreator = " + this.Character.IdCreator;
                 var result = await db.FindWithQueryAsync<CharacterEntity>(query);
 
 
@@ -64,7 +53,7 @@ namespace PoC_Thomas.ViewModels
                     await db.ExecuteAsync("DELETE FROM CharacterEntity WHERE Id =" + result.Id + " AND IdCreator =" + result.IdCreator);
                 }
 
-                await db.InsertAsync(CharacterEntity); // Insert the character into the db
+                await db.InsertAsync(Character); // Insert the character into the db
                 Console.WriteLine("Character saved");
             }
             catch(Exception ex)
@@ -74,8 +63,8 @@ namespace PoC_Thomas.ViewModels
             await DoBackCommand();
         }
 
-        private CharacterDownDTO _character;
-        public CharacterDownDTO Character
+        private CharacterEntity _character;
+        public CharacterEntity Character
         {
             get { return _character; }
             set { SetProperty(ref _character, value); }

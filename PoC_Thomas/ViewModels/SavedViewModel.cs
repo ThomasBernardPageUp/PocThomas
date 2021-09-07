@@ -16,10 +16,13 @@ namespace PoC_Thomas.ViewModels
     public class SavedViewModel : BaseViewModel
     {
         public DelegateCommand<CharacterEntity> CmdDelete { get; set; }
+        public DelegateCommand<CharacterEntity> CmdView { get; set; }
 
         public SavedViewModel(INavigationService navigationService, IDataTransferHelper dataTransfer) : base(navigationService)
         {
             CmdDelete = new DelegateCommand<CharacterEntity>(DeleteChar);
+            CmdView = new DelegateCommand<CharacterEntity>(ViewChar);
+
         }
 
 
@@ -41,7 +44,6 @@ namespace PoC_Thomas.ViewModels
         {
             var db = new SQLiteAsyncConnection(App.DatabasePath);
 
-
             try
             {
                 await db.ExecuteAsync("DELETE FROM CharacterEntity WHERE Id =" + character.Id + " AND IdCreator = " + App.UserId);
@@ -54,6 +56,12 @@ namespace PoC_Thomas.ViewModels
             {
                 HandleException(ex);
             }
+        }
+
+        public async void ViewChar(CharacterEntity character)
+        {
+            var parameter = new NavigationParameters { { "character", character } };
+            await NavigationService.NavigateAsync(Constants.CharacterPage, parameter);
         }
 
 

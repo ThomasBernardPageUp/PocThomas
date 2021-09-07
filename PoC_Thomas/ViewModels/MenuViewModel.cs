@@ -50,9 +50,12 @@ namespace PoC_Thomas.ViewModels
         // This function show the character's page 
         public async void ShowCharacter(CharacterDownDTO character)
         {
-            var parameter = new NavigationParameters { { "character", character } };
-            await NavigationService.NavigateAsync(Constants.CharacterPage, parameter);
+            // var parameter = new NavigationParameters { { "character", character } };
 
+            CharacterEntity characterEntity = new CharacterEntity(character.Id, App.UserId, character.Name, character.Image, character.Species, character.Origin.Name);
+            var parameter = new NavigationParameters { { "character", characterEntity } };
+
+            await NavigationService.NavigateAsync(Constants.CharacterPage, parameter);
         }
 
 

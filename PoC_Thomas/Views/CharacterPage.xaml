@@ -16,7 +16,7 @@
             </StackLayout>
             <StackLayout Orientation="Horizontal">
                 <Label Text="Origin :"></Label>
-                <Entry WidthRequest="200" Text="{Binding Character.Origin.Name}"></Entry>
+                <Entry WidthRequest="200" Text="{Binding Character.Origin}"></Entry>
             </StackLayout>
             <Button Command="{Binding CmdSave}" BackgroundColor="Blue" TextColor="White" Text="Save"></Button>
         </StackLayout>

@@ -10,8 +10,9 @@
                 <DataTemplate>
                     <StackLayout Orientation="Horizontal">
                        <Image Source="{Binding Image}"></Image>
-                       <Label Text="{Binding Name}" VerticalTextAlignment="Center"></Label>
-                        <Button Command="{Binding BindingContext.CmdDelete, Source={x:Reference list}}" CommandParameter="{Binding .}" HorizontalOptions="EndAndExpand" BackgroundColor="Red" TextColor="White" VerticalOptions="CenterAndExpand" Padding="5" Text="Delete"></Button>
+                       <Label Text="{Binding Name}" VerticalTextAlignment="Center" WidthRequest="150"></Label>
+                       <Button Command="{Binding BindingContext.CmdDelete, Source={x:Reference list}}" CommandParameter="{Binding .}" HorizontalOptions="EndAndExpand" BackgroundColor="Red" TextColor="White" VerticalOptions="CenterAndExpand" Padding="5" Text="Delete"></Button>
+                       <Button Command="{Binding BindingContext.CmdView, Source={x:Reference list}}" CommandParameter="{Binding .}" HorizontalOptions="EndAndExpand" BackgroundColor="Blue" TextColor="White" VerticalOptions="CenterAndExpand" Padding="5" Text="View"></Button>
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
