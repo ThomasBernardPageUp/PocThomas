@@ -24,7 +24,7 @@ namespace PoC_Thomas.ViewModels
 
 
         // Constructor 
-        public MenuViewModel(INavigationService navigationService, IDataTransferHelper dataTransfer) : base(navigationService)
+        public MenuViewModel(INavigationService navigationService, IDataTransferHelper dataTransfer, ISqliteNetHelper sqliteNetHelper) : base(navigationService, sqliteNetHelper)
         {
             _dataTransferHelper = dataTransfer;
             CmdItemTapped = new DelegateCommand<CharacterDownDTO>(ShowCharacter);

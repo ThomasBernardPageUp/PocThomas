@@ -57,6 +57,8 @@ namespace PoC_Thomas
         {
             containerRegistry.RegisterSingleton<IHttpClientHelper, HttpClientHelper>();
             containerRegistry.RegisterSingleton<IDataTransferHelper, DataTransferHelper>();
+            containerRegistry.RegisterSingleton<ISqliteNetHelper, SqliteNetHelper>();
+
         }
 
         private void RegisterServices(IContainerRegistry containerRegistry)

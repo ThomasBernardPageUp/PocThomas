@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using PoC_Thomas.Helpers.Interface;
 using PoC_Thomas.Models.Entities;
 using Prism.Navigation;
 using SQLite;
@@ -15,9 +16,10 @@ namespace PoC_Thomas.ViewModels
         public string Password { get; set; }
         public string Picture { get; set; }
         public Command CmdCreate { get; set; }
+        private ISqliteNetHelper _sqliteNetHelper;
 
         // Constructor
-        public AccountViewModel(INavigationService navigationService) : base(navigationService)
+        public AccountViewModel(INavigationService navigationService, ISqliteNetHelper sqliteNetHelper) : base(navigationService, sqliteNetHelper)
         {
             this.CmdCreate = new Command(CreateAccount);
         }
@@ -36,24 +38,17 @@ namespace PoC_Thomas.ViewModels
         {
             try
             {
-                var db = new SQLiteAsyncConnection(App.DatabasePath);
-
-                var result = await db.QueryAsync<UserEntity>("SELECT Id FROM UserEntity WHERE Username = '" + this.Username + "';");
-
-                // If the username not already exist in the database
-                if (result == null || result.Count == 0)
-                {
-                    var res = await db.ExecuteAsync("INSERT INTO UserEntity (Username, Password, Picture) VALUES ('" + this.Username + "', '" + this.Password + "', '" + this.Picture + "')");
-                    Console.WriteLine("user " + this.Username + " created ! ");
-
-                    await DoBackCommand();
-                }
-                else
+                // If the username already exist in the database
+                if (await SqliteNetHelper.UsernameExist(this.Username))
                 {
                     await App.Current.MainPage.DisplayAlert("Error", "This username is already used", "Ok");
                     Console.WriteLine("This username already exist in the database");
                 }
-
+                else
+                {
+                    await SqliteNetHelper.CreateUser(this.Username, this.Password, this.Picture);
+                    await DoBackCommand();
+                }
             }
             catch(Exception ex)
             {

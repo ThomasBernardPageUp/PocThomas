@@ -18,7 +18,7 @@ namespace PoC_Thomas.ViewModels
         public DelegateCommand<CharacterEntity> CmdDelete { get; set; }
         public DelegateCommand<CharacterEntity> CmdView { get; set; }
 
-        public SavedViewModel(INavigationService navigationService, IDataTransferHelper dataTransfer) : base(navigationService)
+        public SavedViewModel(INavigationService navigationService, IDataTransferHelper dataTransfer, ISqliteNetHelper sqliteNetHelper) : base(navigationService, sqliteNetHelper)
         {
             CmdDelete = new DelegateCommand<CharacterEntity>(DeleteChar);
             CmdView = new DelegateCommand<CharacterEntity>(ViewChar);
@@ -31,9 +31,8 @@ namespace PoC_Thomas.ViewModels
         {
             await base.OnNavigatedToAsync(parameters);
 
-            var db = new SQLiteAsyncConnection(App.DatabasePath);
             string query = "SELECT CharacterEntity.Id, CharacterEntity.IdCreator, CharacterEntity.Image, CharacterEntity.Name, CharacterEntity.Origin, CharacterEntity.Species FROM CharacterEntity INNER JOIN UserEntity ON CharacterEntity.IdCreator = UserEntity.Id WHERE UserEntity.Id = " + App.UserId;
-            var result = await db.QueryAsync<CharacterEntity>(query);
+            var result = await SqliteNetHelper.db.QueryAsync<CharacterEntity>(query);
             Characters = new ObservableCollection<CharacterEntity>(result);
         }
         #endregion
@@ -46,7 +45,7 @@ namespace PoC_Thomas.ViewModels
 
             try
             {
-                await db.ExecuteAsync("DELETE FROM CharacterEntity WHERE Id =" + character.Id + " AND IdCreator = " + App.UserId);
+                await SqliteNetHelper.DeleteCharacter(character.Id, App.UserId);
                 Characters.Remove(character);
 
 

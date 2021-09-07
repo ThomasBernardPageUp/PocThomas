@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using PoC_Thomas.Helpers.Interface;
 using PoC_Thomas.Models.Entities;
 using Prism.Navigation;
 using SQLite;
@@ -14,7 +15,7 @@ namespace PoC_Thomas.ViewModels
         public Command CmdSave { get; set; }
 
 
-        public CharacterViewModel(INavigationService navigationService) : base(navigationService)
+        public CharacterViewModel(INavigationService navigationService, ISqliteNetHelper sqliteNetHelper) : base(navigationService, sqliteNetHelper)
         {
             CmdSave = new Command(SaveCharacter);
         }
@@ -27,7 +28,6 @@ namespace PoC_Thomas.ViewModels
 
             if (parameters.ContainsKey("character"))
             {
-                // Character = parameters.GetValue<CharacterDownDTO>("character");
                 Character = parameters.GetValue<CharacterEntity>("character");
             }
         }
@@ -37,24 +37,20 @@ namespace PoC_Thomas.ViewModels
         // With this function we save the character in the Database
         public async void SaveCharacter()
         {
-
-            var db = new SQLiteAsyncConnection(App.DatabasePath);
-
             try
             {
                 string query = "SELECT * FROM CharacterEntity WHERE CharacterEntity.Id =" + this.Character.Id + " AND CharacterEntity.IdCreator = " + this.Character.IdCreator;
-                var result = await db.FindWithQueryAsync<CharacterEntity>(query);
+                var result = await SqliteNetHelper.db.FindWithQueryAsync<CharacterEntity>(query);
 
 
                 // if the character is already saved for this user
                 if (result != null)
                 {
                     await App.Current.MainPage.DisplayAlert("Alert", "This character is already registered, if you register it again it will delete the old one", "Ok");
-                    await db.ExecuteAsync("DELETE FROM CharacterEntity WHERE Id =" + result.Id + " AND IdCreator =" + result.IdCreator);
+                    await SqliteNetHelper.DeleteCharacter(result.Id, App.UserId);
                 }
 
-                await db.InsertAsync(Character); // Insert the character into the db
-                Console.WriteLine("Character saved");
+                await SqliteNetHelper.db.InsertAsync(Character); // Insert the character into the db
             }
             catch(Exception ex)
             {

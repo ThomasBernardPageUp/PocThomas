@@ -20,7 +20,7 @@ namespace PoC_Thomas.ViewModels
 
 
         // Constructor
-        public LoginViewModel(INavigationService navigationService) : base(navigationService)
+        public LoginViewModel(INavigationService navigationService, ISqliteNetHelper sqliteNetHelper) : base(navigationService, sqliteNetHelper)
         {
             this.CmdLogin = new Command(CommandLogin);
             this.CmdAccount = new Command(CommandAccount);
@@ -31,11 +31,9 @@ namespace PoC_Thomas.ViewModels
         protected override async Task OnNavigatedToAsync(INavigationParameters parameters)
         {
             await base.OnNavigatedToAsync(parameters);
-            string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "MyData.db");
-            var db = new SQLiteAsyncConnection(dbPath);
 
-            await db.ExecuteAsync("CREATE TABLE IF NOT EXISTS 'UserEntity'('Id' INTEGER NOT NULL, 'Username' TEXT,'Password' TEXT, 'Picture' TEXT,PRIMARY KEY(\"Id\" AUTOINCREMENT));");
-            await db.ExecuteAsync("CREATE TABLE IF NOT EXISTS 'CharacterEntity' ('Id' INTEGER NOT NULL, 'IdCreator' INTEGER NOT NULL, 'Name' TEXT, 'Image' TEXT, 'Species' TEXT, 'Origin' TEXT, PRIMARY KEY(\"Id\",\"IdCreator\") );");
+            SqliteNetHelper.Query("CREATE TABLE IF NOT EXISTS 'UserEntity'('Id' INTEGER NOT NULL, 'Username' TEXT,'Password' TEXT, 'Picture' TEXT,PRIMARY KEY(\"Id\" AUTOINCREMENT));");
+            SqliteNetHelper.Query("CREATE TABLE IF NOT EXISTS 'CharacterEntity' ('Id' INTEGER NOT NULL, 'IdCreator' INTEGER NOT NULL, 'Name' TEXT, 'Image' TEXT, 'Species' TEXT, 'Origin' TEXT, PRIMARY KEY(\"Id\",\"IdCreator\") );");
         }
 
 
@@ -43,10 +41,7 @@ namespace PoC_Thomas.ViewModels
         // This function verify the userand the password and connect the user .
         public async void CommandLogin()
         {
-            var db = new SQLiteAsyncConnection(App.DatabasePath);
-
-            UserEntity user = await db.Table<UserEntity>().Where(u => u.Username == this.Username && u.Password == this.Password).FirstOrDefaultAsync();
-            Console.WriteLine(db.Table<UserEntity>().ToString());
+            UserEntity user = await SqliteNetHelper.UserConnection(this.Username, this.Password);
 
             if (user != null)
             {

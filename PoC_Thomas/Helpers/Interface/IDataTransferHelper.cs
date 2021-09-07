@@ -12,6 +12,5 @@ namespace PoC_Thomas.Helpers.Interface
     {
         Task<DataTransferHandlerResult<TResult>> SendClientAsync<TResult>
             (string route, HttpMethod httpMethod, object jsonContent = null) where TResult : class;
-
     }
 }
