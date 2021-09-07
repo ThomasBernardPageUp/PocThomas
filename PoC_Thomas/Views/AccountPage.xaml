@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="PoC_Thomas.Views.AccountPage">
+    <StackLayout Margin="20">
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Username : " VerticalOptions="Center"></Label>
+            <Entry Placeholder="Username" Text="{Binding Username, Mode=TwoWay}" HorizontalOptions="FillAndExpand"></Entry>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Password : " VerticalOptions="Center"></Label>
+            <Entry Placeholder="Password" Text="{Binding Password, Mode=TwoWay}" HorizontalOptions="FillAndExpand"></Entry>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="Picture url : " VerticalOptions="Center"></Label>
+            <Entry Placeholder="Picture" Text="{Binding Picture, Mode=TwoWay}" HorizontalOptions="FillAndExpand"></Entry>
+        </StackLayout>
+
+        <Button Text="Create a new account" Command="{Binding CmdCreate}" BackgroundColor="DodgerBlue" TextColor="White"></Button>
+    </StackLayout>
+</ContentPage>

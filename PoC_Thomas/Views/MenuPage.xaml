@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage x:Name="page"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="PoC_Thomas.Views.MenuPage">
+        <StackLayout Margin="10">
+        <Label Margin="0,20" FontSize="30" Text="Rick and Morty character's" HorizontalTextAlignment="Center"></Label>
+        <Button Command="{Binding CmdSaved}" Text="View all saved characters" BackgroundColor="DodgerBlue" TextColor="White"></Button>
+
+        <StackLayout Orientation="Horizontal">
+            <Label TextDecorations="Underline" Margin="10" Text="{Binding NumberOfResults, StringFormat='We found {0} result(s) :'}"></Label>
+        </StackLayout>
+
+         <CollectionView ItemsSource="{Binding Characters}" Margin="10, 0" x:Name="list">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Horizontal" BackgroundColor="{Binding Background}">
+                       <Image Source="{Binding Image}"></Image>
+                       <Label Text="{Binding Name}" VerticalTextAlignment="Center"></Label>
+
+                        <StackLayout.GestureRecognizers>
+                           <TapGestureRecognizer Command="{Binding BindingContext.CmdItemTapped, Source={x:Reference list}}" CommandParameter="{Binding .}"  />
+                        </StackLayout.GestureRecognizers>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+            <Button Command="{Binding PrevPage}" Text="prev"></Button>
+            <Entry IsEnabled="False" Text="{Binding Page}" HorizontalTextAlignment="Center"></Entry>
+            <Button Command="{Binding NexPage}" Text="next"></Button>
+        </StackLayout>
+    </StackLayout>
+</ContentPage>

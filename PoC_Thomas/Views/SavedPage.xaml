@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="PoC_Thomas.Views.SavedPage">
+    <StackLayout Margin="10, 20">
+        <Label Text="All saved characters :" FontSize="30" HorizontalOptions="Center"></Label>
+        <CollectionView ItemsSource="{Binding Characters}" Margin="10, 20" x:Name="list">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Horizontal">
+                       <Image Source="{Binding Image}"></Image>
+                       <Label Text="{Binding Name}" VerticalTextAlignment="Center"></Label>
+                        <Button Command="{Binding BindingContext.CmdDelete, Source={x:Reference list}}" CommandParameter="{Binding .}" HorizontalOptions="EndAndExpand" BackgroundColor="Red" TextColor="White" VerticalOptions="CenterAndExpand" Padding="5" Text="Delete"></Button>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </StackLayout>
+</ContentPage>

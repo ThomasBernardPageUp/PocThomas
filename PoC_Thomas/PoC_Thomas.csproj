@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2083" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Prism.DryIoc.Forms" Version="8.1.97" />
+    <PackageReference Include="Sharpnado.TaskMonitor" Version="1.0.2" />
+    <PackageReference Include="Prism.Core" Version="8.1.97" />
+    <PackageReference Include="Prism.Forms" Version="8.1.97" />
+    <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
+    <PackageReference Include="SQLite.Net.Async-PCL" Version="3.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Newtonsoft.Json" />
+    <None Remove="Prism.DryIoc.Forms" />
+    <None Remove="Sharpnado.TaskMonitor" />
+    <None Remove="Prism.Core" />
+    <None Remove="Prism.Forms" />
+    <None Remove="POC_Thomas_Models\obj\Debug\netstandard2.1\POC_Thomas_Models.csproj.AssemblyReference.cache" />
+    <None Remove="Views\" />
+    <None Remove="ViewModels\" />
+    <None Remove="Commons\" />
+    <None Remove="Services\" />
+    <None Remove="Helpers\" />
+    <None Remove="Helpers\Interface\" />
+    <None Remove="sqlite-net-pcl" />
+    <None Remove="SQLite.Net.Async-PCL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="POC_Thomas_Models\Class1.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="Commons\" />
+    <Folder Include="Services\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Helpers\Interface\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PoC_Thomas.Models\PoC_Thomas.Models.csproj" />
+  </ItemGroup>
+</Project>
