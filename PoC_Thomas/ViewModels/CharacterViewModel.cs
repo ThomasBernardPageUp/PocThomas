@@ -39,9 +39,7 @@ namespace PoC_Thomas.ViewModels
         {
             try
             {
-                string query = "SELECT * FROM CharacterEntity WHERE CharacterEntity.Id =" + this.Character.Id + " AND CharacterEntity.IdCreator = " + this.Character.IdCreator;
-                var result = await SqliteNetHelper.db.FindWithQueryAsync<CharacterEntity>(query);
-
+                var result = await SqliteNetHelper.GetCharacter(Character.Id, App.UserId);
 
                 // if the character is already saved for this user
                 if (result != null)

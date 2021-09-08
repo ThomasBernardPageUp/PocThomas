@@ -31,9 +31,7 @@ namespace PoC_Thomas.ViewModels
         {
             await base.OnNavigatedToAsync(parameters);
 
-            string query = "SELECT CharacterEntity.Id, CharacterEntity.IdCreator, CharacterEntity.Image, CharacterEntity.Name, CharacterEntity.Origin, CharacterEntity.Species FROM CharacterEntity INNER JOIN UserEntity ON CharacterEntity.IdCreator = UserEntity.Id WHERE UserEntity.Id = " + App.UserId;
-            var result = await SqliteNetHelper.db.QueryAsync<CharacterEntity>(query);
-            Characters = new ObservableCollection<CharacterEntity>(result);
+            Characters = new ObservableCollection<CharacterEntity>(await SqliteNetHelper.GetCharacters(App.UserId));
         }
         #endregion
 
@@ -41,8 +39,6 @@ namespace PoC_Thomas.ViewModels
         // This function delete a character from the database
         public async void DeleteChar(CharacterEntity character)
         {
-            var db = new SQLiteAsyncConnection(App.DatabasePath);
-
             try
             {
                 await SqliteNetHelper.DeleteCharacter(character.Id, App.UserId);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using PoC_Thomas.Models.Entities;
@@ -87,5 +88,23 @@ namespace PoC_Thomas.Helpers.Interface
                 return true;
             }
         }
+
+        public async Task<CharacterEntity> GetCharacter(long id, long idCreator)
+        {
+            string query = "SELECT * FROM CharacterEntity WHERE CharacterEntity.Id =" + id + " AND CharacterEntity.IdCreator = " + idCreator;
+            var result = await db.FindWithQueryAsync<CharacterEntity>(query);
+
+            return result;
+        }
+
+        public async Task<List<CharacterEntity>> GetCharacters(long id)
+        {
+            string query = "SELECT CharacterEntity.Id, CharacterEntity.IdCreator, CharacterEntity.Image, CharacterEntity.Name, CharacterEntity.Origin, CharacterEntity.Species FROM CharacterEntity INNER JOIN UserEntity ON CharacterEntity.IdCreator = UserEntity.Id WHERE UserEntity.Id = " + id;
+            var result = await db.QueryAsync<CharacterEntity>(query);
+
+            return result;
+        }
+
+
     }
 }
