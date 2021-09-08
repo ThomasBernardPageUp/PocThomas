@@ -100,8 +100,6 @@ namespace PoC_Thomas.Helpers.Interface
             return user;
         }
 
-
-
         // Delete one character
         // Return true if sucess
         // Else return false
