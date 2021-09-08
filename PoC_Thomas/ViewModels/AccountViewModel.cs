@@ -14,7 +14,6 @@ namespace PoC_Thomas.ViewModels
     {
         public string Username { get; set;}
         public string Password { get; set; }
-        public string Picture { get; set; }
         public Command CmdCreate { get; set; }
         private ISqliteNetHelper _sqliteNetHelper;
 
@@ -55,6 +54,13 @@ namespace PoC_Thomas.ViewModels
                 HandleException(ex);
             }
             
+        }
+
+        private string _picture;
+        public string Picture
+        {
+            get { return _picture; }
+            set { SetProperty(ref _picture, value); }
         }
     }
 }

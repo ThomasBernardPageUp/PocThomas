@@ -5,7 +5,7 @@
     x:Class="PoC_Thomas.Views.MenuPage">
         <StackLayout Margin="10">
         <Label Margin="0,20" FontSize="30" Text="Rick and Morty character's" HorizontalTextAlignment="Center"></Label>
-        <Button Command="{Binding CmdSaved}" Text="View all saved characters" BackgroundColor="DodgerBlue" TextColor="White"></Button>
+        <Button Command="{Binding CmdProfile}" Text="Access to my profile" BackgroundColor="DodgerBlue" TextColor="White"></Button>
 
         <StackLayout Orientation="Horizontal">
             <Label TextDecorations="Underline" Margin="10" Text="{Binding NumberOfResults, StringFormat='We found {0} result(s) :'}"></Label>

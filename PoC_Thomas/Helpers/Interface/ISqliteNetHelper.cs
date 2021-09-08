@@ -21,6 +21,7 @@ namespace PoC_Thomas.Helpers.Interface
             Task<bool> DeleteCharacter(long IdCharacter, long IdCreator);
             Task<CharacterEntity> GetCharacter(long id, long idCreator);
             Task<List<CharacterEntity>> GetCharacters(long id);
+            Task<UserEntity> GetUser(long id);
         }
 
 }

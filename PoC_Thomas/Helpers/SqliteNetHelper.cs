@@ -16,6 +16,7 @@ namespace PoC_Thomas.Helpers.Interface
         public SqliteNetHelper()
         {
             _databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "MyData.db");
+            Console.WriteLine(_databasePath);
             db = new SQLiteAsyncConnection(_databasePath);
         }
 
@@ -69,6 +70,14 @@ namespace PoC_Thomas.Helpers.Interface
                 Console.WriteLine("User " + username + " is created");
                 return true;
             }
+        }
+
+
+        public async Task<UserEntity> GetUser(long id)
+        {
+            var user = await db.QueryAsync<UserEntity>("SELECT * FROM UserEntity WHERE Id =" + id);
+
+            return user[0];
         }
 
 

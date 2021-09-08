@@ -13,7 +13,7 @@ namespace PoC_Thomas.Commons
         public const string MenuPage = "MenuPage";
         public const string CharacterPage = "CharacterPage";
         public const string AccountPage = "AccountPage";
-        public const string SavedPage = "SavedPage";
+        public const string ProfilePage = "ProfilePage";
 
         // public const string datadatabasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "MyData.db");
 

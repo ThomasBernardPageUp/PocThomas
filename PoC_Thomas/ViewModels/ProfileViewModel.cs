@@ -13,16 +13,15 @@ using Xamarin.Forms;
 
 namespace PoC_Thomas.ViewModels
 {
-    public class SavedViewModel : BaseViewModel
+    public class ProfileViewModel : BaseViewModel
     {
         public DelegateCommand<CharacterEntity> CmdDelete { get; set; }
         public DelegateCommand<CharacterEntity> CmdView { get; set; }
 
-        public SavedViewModel(INavigationService navigationService, IDataTransferHelper dataTransfer, ISqliteNetHelper sqliteNetHelper) : base(navigationService, sqliteNetHelper)
+        public ProfileViewModel(INavigationService navigationService, IDataTransferHelper dataTransfer, ISqliteNetHelper sqliteNetHelper) : base(navigationService, sqliteNetHelper)
         {
             CmdDelete = new DelegateCommand<CharacterEntity>(DeleteChar);
             CmdView = new DelegateCommand<CharacterEntity>(ViewChar);
-
         }
 
 
@@ -32,6 +31,7 @@ namespace PoC_Thomas.ViewModels
             await base.OnNavigatedToAsync(parameters);
 
             Characters = new ObservableCollection<CharacterEntity>(await SqliteNetHelper.GetCharacters(App.UserId));
+            UserEntity = await SqliteNetHelper.GetUser(App.UserId);
         }
         #endregion
 
@@ -39,18 +39,8 @@ namespace PoC_Thomas.ViewModels
         // This function delete a character from the database
         public async void DeleteChar(CharacterEntity character)
         {
-            try
-            {
-                await SqliteNetHelper.DeleteCharacter(character.Id, App.UserId);
-                Characters.Remove(character);
-
-
-                Console.WriteLine("Character deleted");
-            }
-            catch (Exception ex)
-            {
-                HandleException(ex);
-            }
+            await SqliteNetHelper.DeleteCharacter(character.Id, App.UserId);
+            Characters.Remove(character);
         }
 
         public async void ViewChar(CharacterEntity character)
@@ -59,6 +49,12 @@ namespace PoC_Thomas.ViewModels
             await NavigationService.NavigateAsync(Constants.CharacterPage, parameter);
         }
 
+        private UserEntity _userEntity;
+        public UserEntity UserEntity
+        {
+            get { return _userEntity; }
+            set { SetProperty(ref _userEntity, value); }
+        }
 
 
         private ObservableCollection<CharacterEntity> _characters;

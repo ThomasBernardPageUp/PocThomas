@@ -15,8 +15,6 @@ namespace PoC_Thomas
     public partial class App
     {
         public static long UserId {get; set;}
-        public static string DatabasePath { get; set; }
-
 
         public App(IPlatformInitializer initializer): base(initializer)
         {
@@ -79,7 +77,7 @@ namespace PoC_Thomas
             containerRegistry.RegisterForNavigation<MenuPage, MenuViewModel>(Constants.MenuPage);
             containerRegistry.RegisterForNavigation<CharacterPage, CharacterViewModel>(Constants.CharacterPage);
             containerRegistry.RegisterForNavigation<AccountPage, AccountViewModel>(Constants.AccountPage);
-            containerRegistry.RegisterForNavigation<SavedPage, SavedViewModel>(Constants.SavedPage);
+            containerRegistry.RegisterForNavigation<ProfilePage, ProfileViewModel>(Constants.ProfilePage);
 
         }
 
@@ -87,8 +85,6 @@ namespace PoC_Thomas
         protected override void OnStart()
         {
             base.OnStart();
-            DatabasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "MyData.db");
-
         }
 
         protected override void OnSleep()

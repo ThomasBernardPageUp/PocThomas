@@ -18,7 +18,7 @@ namespace PoC_Thomas.ViewModels
         
         private IDataTransferHelper _dataTransferHelper;
         public DelegateCommand<CharacterDownDTO> CmdItemTapped { get; private set; }
-        public Command CmdSaved { get; set; }
+        public Command CmdProfile { get; set; }
         public Command PrevPage { get; set; }
         public Command NexPage { get; set; }
 
@@ -31,7 +31,7 @@ namespace PoC_Thomas.ViewModels
             PrevPage = new Command(() => { Page--; LoadCharacters(); });
             NexPage = new Command(() => { Page++; LoadCharacters(); });
 
-            CmdSaved = new Command(SavedPage);
+            CmdProfile = new Command(ProfilePage);
         }
 
 
@@ -117,14 +117,13 @@ namespace PoC_Thomas.ViewModels
                 }
                 character.Background = bg.ToHex();
             }
-
         }
 
 
-        // Show the SavedPage
-        public async void SavedPage()
+        // Show the ProfilePage
+        public async void ProfilePage()
         {
-            await NavigationService.NavigateAsync(Constants.SavedPage);
+            await NavigationService.NavigateAsync(Constants.ProfilePage);
         }
 
 
