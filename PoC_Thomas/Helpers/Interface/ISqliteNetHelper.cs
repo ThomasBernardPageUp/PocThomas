@@ -19,7 +19,7 @@ namespace PoC_Thomas.Helpers.Interface
             Task<bool> UsernameExist(string username);
             Task<bool> CreateUser(string username, string password, string picture);
             Task<bool> DeleteCharacter(long IdCharacter, long IdCreator);
-            Task<CharacterEntity> GetCharacter(long id, long idCreator);
+            Task<bool> CheckCharacter(long id, long idCreator);
             Task<List<CharacterEntity>> GetCharacters(long id);
             Task<UserEntity> GetUser(long id);
         }

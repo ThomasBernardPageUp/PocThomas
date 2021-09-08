@@ -31,9 +31,6 @@ namespace PoC_Thomas.ViewModels
         protected override async Task OnNavigatedToAsync(INavigationParameters parameters)
         {
             await base.OnNavigatedToAsync(parameters);
-
-            SqliteNetHelper.Query("CREATE TABLE IF NOT EXISTS 'UserEntity'('Id' INTEGER NOT NULL, 'Username' TEXT,'Password' TEXT, 'Picture' TEXT,PRIMARY KEY(\"Id\" AUTOINCREMENT));");
-            SqliteNetHelper.Query("CREATE TABLE IF NOT EXISTS 'CharacterEntity' ('Id' INTEGER NOT NULL, 'IdCreator' INTEGER NOT NULL, 'Name' TEXT, 'Image' TEXT, 'Species' TEXT, 'Origin' TEXT, PRIMARY KEY(\"Id\",\"IdCreator\") );");
         }
 
 
@@ -41,6 +38,13 @@ namespace PoC_Thomas.ViewModels
         // This function verify the userand the password and connect the user .
         public async void CommandLogin()
         {
+            if(this.Username == null || this.Password == null)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Please enter values in entries", "Ok");
+                Console.WriteLine("No value in entries");
+                return;
+            }
+
             UserEntity user = await SqliteNetHelper.UserConnection(this.Username, this.Password);
 
             if (user != null)

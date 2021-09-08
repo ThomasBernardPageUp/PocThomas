@@ -39,13 +39,13 @@ namespace PoC_Thomas.ViewModels
         {
             try
             {
-                var result = await SqliteNetHelper.GetCharacter(Character.Id, App.UserId);
+                var result = await SqliteNetHelper.CheckCharacter(Character.Id, App.UserId);
 
                 // if the character is already saved for this user
-                if (result != null)
+                if (result)
                 {
                     await App.Current.MainPage.DisplayAlert("Alert", "This character is already registered, if you register it again it will delete the old one", "Ok");
-                    await SqliteNetHelper.DeleteCharacter(result.Id, App.UserId);
+                    await SqliteNetHelper.DeleteCharacter(Character.Id, App.UserId);
                 }
 
                 await SqliteNetHelper.db.InsertAsync(Character); // Insert the character into the db

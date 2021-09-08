@@ -29,5 +29,12 @@ namespace PoC_Thomas.Models.Entities
         public UserEntity()
         {
         }
+
+        public UserEntity(string username, string password, string picture):this()
+        {
+            this.Username = username;
+            this.Password = password;
+            this.Picture = picture;
+        }
     }
 }

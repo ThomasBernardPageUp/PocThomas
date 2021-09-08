@@ -45,7 +45,7 @@ namespace PoC_Thomas
                 //Register for navigation is always the last registration method
                 RegisterForNavigation(containerRegistry);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }

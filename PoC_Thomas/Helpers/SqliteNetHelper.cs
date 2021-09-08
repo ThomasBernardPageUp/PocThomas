@@ -16,8 +16,12 @@ namespace PoC_Thomas.Helpers.Interface
         public SqliteNetHelper()
         {
             _databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "MyData.db");
-            Console.WriteLine(_databasePath);
             db = new SQLiteAsyncConnection(_databasePath);
+            Console.WriteLine(_databasePath);
+
+
+            Query("CREATE TABLE IF NOT EXISTS 'UserEntity'('Id' INTEGER NOT NULL, 'Username' TEXT,'Password' TEXT, 'Picture' TEXT,PRIMARY KEY(\"Id\" AUTOINCREMENT));");
+            Query("CREATE TABLE IF NOT EXISTS 'CharacterEntity' ('Id' INTEGER NOT NULL, 'IdCreator' INTEGER NOT NULL, 'Name' TEXT, 'Image' TEXT, 'Species' TEXT, 'Origin' TEXT, PRIMARY KEY(\"Id\",\"IdCreator\") );");
         }
 
         public string GetDataBasePath()
@@ -31,9 +35,20 @@ namespace PoC_Thomas.Helpers.Interface
             await db.ExecuteAsync(query);
         }
 
+
+        // Return one user or null
         public async Task<UserEntity> UserConnection(string username, string password)
         {
             UserEntity user = await db.Table<UserEntity>().Where(u => u.Username == username && u.Password == password).FirstOrDefaultAsync();
+
+            if(user != null)
+            {
+                Console.WriteLine("User found -> ID = " + user.Id);
+            }
+            else
+            {
+                Console.WriteLine("User not found");
+            }
 
             return user;
         }
@@ -42,14 +57,16 @@ namespace PoC_Thomas.Helpers.Interface
         // return false if the username is free
         public async Task<bool> UsernameExist(string username)
         {
-            var result = await db.QueryAsync<UserEntity>("SELECT Id FROM UserEntity WHERE Username = '" + username + "';");
+            var result = await db.Table<UserEntity>().Where(u => u.Username == username).FirstOrDefaultAsync();
 
-            if (result == null || result.Count == 0)
+            if (result == null)
             {
+                Console.WriteLine("This username is free");
                 return false;
             }
             else
             {
+                Console.WriteLine("This username is already takken");
                 return true;
             }
         }
@@ -59,6 +76,7 @@ namespace PoC_Thomas.Helpers.Interface
         public async Task<bool> CreateUser(string username, string password, string picture)
         {
             int res = await db.ExecuteAsync("INSERT INTO UserEntity (Username, Password, Picture) VALUES ('" + username + "', '" + password + "', '" + picture + "')");
+
 
             if (res == 0)
             {
@@ -73,43 +91,57 @@ namespace PoC_Thomas.Helpers.Interface
         }
 
 
+        // Return one user with the id in parameter or null
         public async Task<UserEntity> GetUser(long id)
         {
-            var user = await db.QueryAsync<UserEntity>("SELECT * FROM UserEntity WHERE Id =" + id);
+            // var user = await db.QueryAsync<UserEntity>("SELECT * FROM UserEntity WHERE Id =" + id);
+            var user = await db.Table<UserEntity>().Where(u => u.Id == id).FirstOrDefaultAsync();
 
-            return user[0];
+            return user;
         }
 
 
-        public async Task<bool> DeleteCharacter(long IdCharacter, long IdCreator)
+
+        // Delete one character
+        // Return true if sucess
+        // Else return false
+        public async Task<bool> DeleteCharacter(long idCharacter, long idCreator)
         {
-            int result = await db.ExecuteAsync("DELETE FROM CharacterEntity WHERE Id =" + IdCharacter + " AND IdCreator = " + IdCreator);
-
-            if(result == 0)
+            try
             {
-                Console.WriteLine("Deleting Error, " + result + " row(s) modified");
+                await db.Table<CharacterEntity>().Where(c => c.Id == idCharacter && c.IdCreator == idCreator).DeleteAsync();
+                Console.WriteLine("Deleting Success");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Deleting error");
                 return false;
+            }
+        }
 
+        // Return true if the user has already save this character
+        // Else return false
+        public async Task<bool> CheckCharacter(long id, long idCreator)
+        {
+            var result = await db.Table<CharacterEntity>().Where(c => c.Id == id && c.IdCreator == idCreator).FirstOrDefaultAsync();
+
+            if(result == null)
+            {
+                return false;
             }
             else
             {
-                Console.WriteLine("Deleting Success, " + result + " row(s) modified, character deleted");
+                Console.WriteLine("This character already exist");
                 return true;
             }
         }
 
-        public async Task<CharacterEntity> GetCharacter(long id, long idCreator)
-        {
-            string query = "SELECT * FROM CharacterEntity WHERE CharacterEntity.Id =" + id + " AND CharacterEntity.IdCreator = " + idCreator;
-            var result = await db.FindWithQueryAsync<CharacterEntity>(query);
 
-            return result;
-        }
-
+        // return the list of all character of the user 
         public async Task<List<CharacterEntity>> GetCharacters(long id)
         {
-            string query = "SELECT CharacterEntity.Id, CharacterEntity.IdCreator, CharacterEntity.Image, CharacterEntity.Name, CharacterEntity.Origin, CharacterEntity.Species FROM CharacterEntity INNER JOIN UserEntity ON CharacterEntity.IdCreator = UserEntity.Id WHERE UserEntity.Id = " + id;
-            var result = await db.QueryAsync<CharacterEntity>(query);
+            var result = await db.Table<CharacterEntity>().Where(c => c.IdCreator == id).ToListAsync();
 
             return result;
         }
