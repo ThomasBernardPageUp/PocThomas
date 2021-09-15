@@ -13,8 +13,8 @@ namespace PoC_Thomas.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
-        public Command CmdLogin { get; set; }
-        public Command CmdAccount { get; set; }
+        public Command LoginCommand { get; set; }
+        public Command CreateAccountCommand { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
 
@@ -22,8 +22,8 @@ namespace PoC_Thomas.ViewModels
         // Constructor
         public LoginViewModel(INavigationService navigationService, ISqliteNetHelper sqliteNetHelper) : base(navigationService, sqliteNetHelper)
         {
-            this.CmdLogin = new Command(CommandLogin);
-            this.CmdAccount = new Command(CommandAccount);
+            this.LoginCommand = new Command(VerifyLogin);
+            this.CreateAccountCommand = new Command(AccountPage);
         }
 
 
@@ -36,7 +36,7 @@ namespace PoC_Thomas.ViewModels
 
 
         // This function verify the userand the password and connect the user .
-        public async void CommandLogin()
+        public async void VerifyLogin()
         {
             if(this.Username == null || this.Password == null)
             {
@@ -63,7 +63,7 @@ namespace PoC_Thomas.ViewModels
 
 
         // Go to the accountPage
-        public async void CommandAccount()
+        public async void AccountPage()
         {
             await NavigationService.NavigateAsync(Constants.AccountPage);
         }

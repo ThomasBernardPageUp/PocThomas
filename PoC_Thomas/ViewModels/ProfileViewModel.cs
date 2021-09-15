@@ -15,13 +15,13 @@ namespace PoC_Thomas.ViewModels
 {
     public class ProfileViewModel : BaseViewModel
     {
-        public DelegateCommand<CharacterEntity> CmdDelete { get; set; }
-        public DelegateCommand<CharacterEntity> CmdView { get; set; }
+        public DelegateCommand<CharacterEntity> DeleteCommand { get; set; }
+        public DelegateCommand<CharacterEntity> ViewCommand { get; set; }
 
-        public ProfileViewModel(INavigationService navigationService, IDataTransferHelper dataTransfer, ISqliteNetHelper sqliteNetHelper) : base(navigationService, sqliteNetHelper)
+        public ProfileViewModel(INavigationService navigationService, ISqliteNetHelper sqliteNetHelper) : base(navigationService, sqliteNetHelper)
         {
-            CmdDelete = new DelegateCommand<CharacterEntity>(DeleteChar);
-            CmdView = new DelegateCommand<CharacterEntity>(ViewChar);
+            DeleteCommand = new DelegateCommand<CharacterEntity>(DeleteChar);
+            ViewCommand = new DelegateCommand<CharacterEntity>(ViewChar);
         }
 
 

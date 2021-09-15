@@ -3,6 +3,8 @@ using System.IO;
 using System.Threading.Tasks;
 using PoC_Thomas.Helpers.Interface;
 using PoC_Thomas.Models.Entities;
+using PoC_Thomas.Repositories.Interface;
+using PoC_Thomas.Services.Interface;
 using Prism.Navigation;
 using SQLite;
 using SQLitePCL;
@@ -14,13 +16,20 @@ namespace PoC_Thomas.ViewModels
     {
         public string Username { get; set;}
         public string Password { get; set; }
-        public Command CmdCreate { get; set; }
-        private ISqliteNetHelper _sqliteNetHelper;
+        public Command CreateCommand { get; set; }
+        public Command PictureCommand { get; set; }
+
+        private ICameraService _cameraService;
+        private IUserRepository _userRepository;
+
 
         // Constructor
         public AccountViewModel(INavigationService navigationService, ISqliteNetHelper sqliteNetHelper) : base(navigationService, sqliteNetHelper)
         {
-            this.CmdCreate = new Command(CreateAccount);
+            this.CreateCommand = new Command(CreateAccount);
+            this.PictureCommand = new Command(TakePicture);
+            this._cameraService = DependencyService.Get<ICameraService>();
+            // this._userRepository = userRepository;
         }
 
 
@@ -31,36 +40,47 @@ namespace PoC_Thomas.ViewModels
         }
         #endregion
 
+        public async void TakePicture()
+        {
+            var photo = await _cameraService.TakePictureAsync();
+
+        }
 
         // This function create a new UserEntity and save it in the Database
         public async void CreateAccount()
         {
-            try
+            if(Username == "" || Username == " " || Password == "" || Password == " ")
             {
-                // If the username already exist in the database
-                if (await SqliteNetHelper.UsernameExist(this.Username))
-                {
-                    await App.Current.MainPage.DisplayAlert("Error", "This username is already used", "Ok");
-                    Console.WriteLine("This username already exist in the database");
-                }
-                else
-                {
-                    await SqliteNetHelper.CreateUser(this.Username, this.Password, this.Picture);
-                    await DoBackCommand();
-                }
+                await App.Current.MainPage.DisplayAlert("Error", "please enter one username and one password", "Ok");
             }
-            catch(Exception ex)
+            else
             {
-                HandleException(ex);
-            }
-            
+                try
+                {
+                    // If the username already exist in the database
+                    if (await SqliteNetHelper.UsernameExist(this.Username))
+                    {
+                        await App.Current.MainPage.DisplayAlert("Error", "This username is already used", "Ok");
+                        Console.WriteLine("This username already exist in the database");
+                    }
+                    else
+                    {
+                        await SqliteNetHelper.CreateUser(this.Username, this.Password, this.PictureUrl);
+                        await DoBackCommand();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    HandleException(ex);
+                }
+            } 
         }
 
-        private string _picture;
-        public string Picture
+        private string _pictureUrl;
+        public string PictureUrl
         {
-            get { return _picture; }
-            set { SetProperty(ref _picture, value); }
+            get { return _pictureUrl; }
+            set { SetProperty(ref _pictureUrl, value); }
         }
     }
 }

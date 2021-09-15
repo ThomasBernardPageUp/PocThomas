@@ -12,12 +12,12 @@ namespace PoC_Thomas.ViewModels
 {
     public class CharacterViewModel : BaseViewModel
     {
-        public Command CmdSave { get; set; }
+        public Command SaveCommand { get; set; }
 
 
         public CharacterViewModel(INavigationService navigationService, ISqliteNetHelper sqliteNetHelper) : base(navigationService, sqliteNetHelper)
         {
-            CmdSave = new Command(SaveCharacter);
+            SaveCommand = new Command(SaveCharacter);
         }
 
 

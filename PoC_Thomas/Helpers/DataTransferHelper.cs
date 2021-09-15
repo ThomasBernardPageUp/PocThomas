@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using PoC_Thomas.Helpers.Interface;
 using PoC_Thomas.Models.Business;
-using PoC_Thomas.Models.Enums;
 
 namespace PoC_Thomas.Helpers
 {

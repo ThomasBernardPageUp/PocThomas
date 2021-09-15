@@ -5,7 +5,7 @@
     x:Class="PoC_Thomas.Views.MenuPage">
         <StackLayout Margin="10">
         <Label Margin="0,20" FontSize="30" Text="Rick and Morty character's" HorizontalTextAlignment="Center"></Label>
-        <Button Command="{Binding CmdProfile}" Text="Access to my profile" BackgroundColor="DodgerBlue" TextColor="White"></Button>
+        <Button Command="{Binding ProfileCommand}" Text="Access to my profile" BackgroundColor="DodgerBlue" TextColor="White"></Button>
 
         <StackLayout Orientation="Horizontal">
             <Label TextDecorations="Underline" Margin="10" Text="{Binding NumberOfResults, StringFormat='We found {0} result(s) :'}"></Label>
@@ -19,7 +19,7 @@
                        <Label Text="{Binding Name}" VerticalTextAlignment="Center"></Label>
 
                         <StackLayout.GestureRecognizers>
-                           <TapGestureRecognizer Command="{Binding BindingContext.CmdItemTapped, Source={x:Reference list}}" CommandParameter="{Binding .}"  />
+                           <TapGestureRecognizer Command="{Binding BindingContext.CharacterTappedCommand, Source={x:Reference list}}" CommandParameter="{Binding .}"  />
                         </StackLayout.GestureRecognizers>
                     </StackLayout>
                 </DataTemplate>

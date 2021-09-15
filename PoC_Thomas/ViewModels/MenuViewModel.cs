@@ -17,8 +17,8 @@ namespace PoC_Thomas.ViewModels
     {
         
         private IDataTransferHelper _dataTransferHelper;
-        public DelegateCommand<CharacterDownDTO> CmdItemTapped { get; private set; }
-        public Command CmdProfile { get; set; }
+        public DelegateCommand<CharacterDownDTO> CharacterTappedCommand { get; private set; }
+        public Command ProfileCommand { get; set; }
         public Command PrevPage { get; set; }
         public Command NexPage { get; set; }
 
@@ -27,11 +27,11 @@ namespace PoC_Thomas.ViewModels
         public MenuViewModel(INavigationService navigationService, IDataTransferHelper dataTransfer, ISqliteNetHelper sqliteNetHelper) : base(navigationService, sqliteNetHelper)
         {
             _dataTransferHelper = dataTransfer;
-            CmdItemTapped = new DelegateCommand<CharacterDownDTO>(ShowCharacter);
+            CharacterTappedCommand = new DelegateCommand<CharacterDownDTO>(ShowCharacter);
             PrevPage = new Command(() => { Page--; LoadCharacters(); });
             NexPage = new Command(() => { Page++; LoadCharacters(); });
 
-            CmdProfile = new Command(ProfilePage);
+            ProfileCommand = new Command(ProfilePage);
         }
 
 

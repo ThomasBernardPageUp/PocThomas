@@ -1,9 +1,13 @@
 ﻿using System;
 using System.IO;
+using PageUpX.Core.Log;
 using PoC_Thomas.Commons;
 using PoC_Thomas.Helpers;
 using PoC_Thomas.Helpers.Interface;
 using PoC_Thomas.Models.Entities;
+using PoC_Thomas.Repositories;
+using PoC_Thomas.Repositories.Interface;
+using PoC_Thomas.Services.Interface;
 using PoC_Thomas.ViewModels;
 using PoC_Thomas.Views;
 using Prism;
@@ -63,6 +67,15 @@ namespace PoC_Thomas
         {
             //Example  
             //containerRegistry.RegisterSingleton<ILoginService, LoginService>();
+
+            //containerRegistry.RegisterSingleton<ICameraService, >();
+
+
+            containerRegistry.RegisterSingleton<IUserRepository, UserRepository>();
+
+
+            containerRegistry.RegisterSingleton<IPuxLogger, ConsoleLoggerService>();
+
         }
 
         private void RegisterForNavigation(IContainerRegistry containerRegistry)

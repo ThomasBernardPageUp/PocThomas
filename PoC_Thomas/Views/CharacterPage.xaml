@@ -18,7 +18,7 @@
                 <Label Text="Origin :"></Label>
                 <Entry WidthRequest="200" Text="{Binding Character.Origin}"></Entry>
             </StackLayout>
-            <Button Command="{Binding CmdSave}" BackgroundColor="Blue" TextColor="White" Text="Save"></Button>
+            <Button Command="{Binding SaveCommand}" BackgroundColor="Blue" TextColor="White" Text="Save"></Button>
         </StackLayout>
     </StackLayout>
 </ContentPage>

@@ -11,8 +11,8 @@
         <StackLayout Margin="20,20">
             <Entry Text="{Binding Username}" Placeholder="Username"></Entry>
             <Entry Text="{Binding Password}" Placeholder="Password"></Entry>
-            <Button Text="Login" BackgroundColor="#2196F3" TextColor="White" Command="{Binding CmdLogin}"></Button>
-            <Button Text="Create a new account" Command="{Binding CmdAccount}"></Button>
+            <Button Text="Login" BackgroundColor="#2196F3" TextColor="White" Command="{Binding LoginCommand}"></Button>
+            <Button Text="Create a new account" Command="{Binding CreateAccountCommand}"></Button>
         </StackLayout>
         
     </StackLayout>
