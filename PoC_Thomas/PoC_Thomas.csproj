@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
   </PropertyGroup>
 
@@ -23,7 +23,7 @@
     <PackageReference Include="Xam.Plugin.Media" Version="5.0.1" />
     <PackageReference Include="PageUpX.Core" Version="2.1.0" />
     <PackageReference Include="PageUpX.DataAccess" Version="2.1.0" />
-    <PackageReference Include="PageUpX.DataAccess.SQLite" Version="1.0.2" />
+    <PackageReference Include="PageUpX.DataAccess.SQLite" Version="2.1.0" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Newtonsoft.Json" />

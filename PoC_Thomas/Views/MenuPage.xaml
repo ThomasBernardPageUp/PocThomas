@@ -18,10 +18,10 @@
 
 
 
-        <SearchBar Placeholder="Search one character"></SearchBar>
+        <SearchBar Text="{Binding SearchedCharacterName}" SearchCommand="{Binding SearchCommand}" Placeholder="Search one character"></SearchBar>
             <StackLayout Orientation="Horizontal" BackgroundColor="AliceBlue">
-                <Picker Title="Choose one sex" HorizontalOptions="FillAndExpand"></Picker>
-                <Button Text="Search" BackgroundColor="DodgerBlue" TextColor="White" Padding="30, 0"></Button>
+                <Picker SelectedItem="{Binding SelectedGender}" Title="Choose one sex" HorizontalOptions="FillAndExpand" ItemsSource="{Binding AllGenders}"></Picker>
+                <Button Command="{Binding SearchCommand}" Text="Search" BackgroundColor="DodgerBlue" TextColor="White" Padding="30, 0"></Button>
             </StackLayout>
             <Label TextDecorations="Underline" Margin="10" Text="{Binding Characters.Count, StringFormat='We found {0} result(s) :'}"></Label>
 
@@ -41,10 +41,5 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
-            <Button Command="{Binding PrevPage}" Text="prev"></Button>
-            <Entry IsEnabled="False" Text="{Binding Page}" HorizontalTextAlignment="Center"></Entry>
-            <Button Command="{Binding NexPage}" Text="next"></Button>
-        </StackLayout>
     </StackLayout>
 </ContentPage>

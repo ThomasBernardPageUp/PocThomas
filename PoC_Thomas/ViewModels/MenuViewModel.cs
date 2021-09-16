@@ -10,6 +10,7 @@ using Test.Model.DTO.Down;
 using PoC_Thomas.Helpers;
 using PoC_Thomas.Models.Entities;
 using Prism.Commands;
+using System.Linq;
 
 namespace PoC_Thomas.ViewModels
 {
@@ -17,20 +18,27 @@ namespace PoC_Thomas.ViewModels
     {
         
         private IDataTransferHelper _dataTransferHelper;
+
         public DelegateCommand<CharacterDownDTO> CharacterTappedCommand { get; set; }
         public Command ProfileCommand { get; set; }
-
-
+        public Command SearchCommand { get; set; }
+        public string SearchedCharacterName { get; set; }
+        public List<string> AllGenders { get; set; }
+        public string SelectedGender { get; set; }
 
         // Constructor 
         public MenuViewModel(INavigationService navigationService, IDataTransferHelper dataTransfer, ISqliteNetHelper sqliteNetHelper) : base(navigationService, sqliteNetHelper)
         {
             _dataTransferHelper = dataTransfer;
-            CharacterTappedCommand = new DelegateCommand<CharacterDownDTO>(ShowCharacter);
-            AllCharacters = new List<CharacterDownDTO>();
-     
 
-            ProfileCommand = new Command(ProfilePage);
+
+            this.CharacterTappedCommand = new DelegateCommand<CharacterDownDTO>(ShowCharacter);
+            this.SearchCommand = new Command(SearchCharacters);
+            this.ProfileCommand = new Command(ProfilePage);
+
+
+            AllCharacters = new List<CharacterDownDTO>();
+            AllGenders = new List<string>() { "All", "Male", "Female", "unknown" };
         }
 
 
@@ -54,7 +62,26 @@ namespace PoC_Thomas.ViewModels
 
             await NavigationService.NavigateAsync(Constants.CharacterPage, parameter);
         }
+        
+        public async void SearchCharacters()
+        {
+            // 1) We reset the list
+            Characters = AllCharacters;
 
+
+            // 2) We filter with the name
+            if(!string.IsNullOrEmpty(SearchedCharacterName))
+            {
+                Characters = AllCharacters.Where(character => character.Name.Contains(SearchedCharacterName)).ToList();
+            }
+
+
+            // We filter with the gender
+            if(!string.IsNullOrEmpty(SelectedGender) && SelectedGender != "All")
+            {
+                Characters = Characters.Where(character => character.Gender.Contains(SelectedGender)).ToList();
+            }
+        }
 
 
         // Load all characters from API
@@ -64,6 +91,7 @@ namespace PoC_Thomas.ViewModels
             
             string url = "https://rickandmortyapi.com/api/character?page=";
 
+            // 1 to 34
             for (int i = 1; i < 35; i++)
             {
                 var result = await _dataTransferHelper.SendClientAsync<CharactersDownDTO>(url + i, HttpMethod.Get);

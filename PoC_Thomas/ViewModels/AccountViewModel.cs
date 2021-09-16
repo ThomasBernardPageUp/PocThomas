@@ -22,7 +22,7 @@ namespace PoC_Thomas.ViewModels
 
         private IStorageService _storageService;
         private ICameraService _cameraService;
-        //private IUserRepository _userRepository;
+        // private IUserRepository _userRepository;
 
 
         // Constructor

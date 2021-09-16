@@ -11,6 +11,7 @@ using PoC_Thomas.Repositories.Interface;
 using PoC_Thomas.Services.Interface;
 using PoC_Thomas.ViewModels;
 using PoC_Thomas.Views;
+using PageUpX.DataAccess.SQLite;
 using Prism;
 using Prism.Ioc;
 using Xamarin.Forms;
@@ -44,8 +45,8 @@ namespace PoC_Thomas
         {
             try
             {
-                RegisterServices(containerRegistry);
                 RegisterHelpers(containerRegistry);
+                RegisterServices(containerRegistry);
                 RegisterDataAscessor(containerRegistry);
                 RegisterRepositories(containerRegistry);
 
@@ -71,22 +72,18 @@ namespace PoC_Thomas
             //Example  
             //containerRegistry.RegisterSingleton<ILoginService, LoginService>();
 
-            //containerRegistry.RegisterSingleton<ICameraService, >();
-
-
-
-
-
             containerRegistry.RegisterSingleton<IPuxLogger, ConsoleLoggerService>();
         }
+
+
         private void RegisterDataAscessor(IContainerRegistry containerRegistry)
         {
-            // containerRegistry.RegisterSingleton<IPuxSimpleDataAccessor<UserEntity>, PuxSimpleDataAccessorBase<UserEntity>>();
+            containerRegistry.RegisterSingleton<IPuxSimpleDataAccessor<UserEntity>, PuxSimpleDataAccessorSQLite<UserEntity>>();
         }
 
         private void RegisterRepositories(IContainerRegistry containerRegistry)
         {
-            //containerRegistry.RegisterSingleton<IUserRepository, UserRepository>();
+            containerRegistry.RegisterSingleton<IUserRepository, UserRepository>();
         }
 
         private void RegisterForNavigation(IContainerRegistry containerRegistry)
@@ -94,15 +91,16 @@ namespace PoC_Thomas
             containerRegistry.RegisterForNavigation<NavigationPage>(Constants.NavigationPage);
 
 
-
             //Here we register the page and the viewmodel to link them.
             //More, we had a name at this couple to reuse them more efficently.
+
+
             containerRegistry.RegisterForNavigation<LoginPage, LoginViewModel>(Constants.LoginPage);
             containerRegistry.RegisterForNavigation<MenuPage, MenuViewModel>(Constants.MenuPage);
             containerRegistry.RegisterForNavigation<CharacterPage, CharacterViewModel>(Constants.CharacterPage);
             containerRegistry.RegisterForNavigation<AccountPage, AccountViewModel>(Constants.AccountPage);
             containerRegistry.RegisterForNavigation<ProfilePage, ProfileViewModel>(Constants.ProfilePage);
-
+            containerRegistry.RegisterForNavigation<ProfilePage, ProfileViewModel>(Constants.ProfilePage);
         }
 
 
