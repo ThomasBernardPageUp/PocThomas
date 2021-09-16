@@ -21,6 +21,9 @@
     <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
     <PackageReference Include="SQLite.Net.Async-PCL" Version="3.1.1" />
     <PackageReference Include="Xam.Plugin.Media" Version="5.0.1" />
+    <PackageReference Include="PageUpX.Core" Version="2.1.0" />
+    <PackageReference Include="PageUpX.DataAccess" Version="2.1.0" />
+    <PackageReference Include="PageUpX.DataAccess.SQLite" Version="1.0.2" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Newtonsoft.Json" />
@@ -39,6 +42,9 @@
     <None Remove="SQLite.Net.Async-PCL" />
     <None Remove="Services\Interface\" />
     <None Remove="Xam.Plugin.Media" />
+    <None Remove="PageUpX.Core" />
+    <None Remove="PageUpX.DataAccess" />
+    <None Remove="PageUpX.DataAccess.SQLite" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="POC_Thomas_Models\Class1.cs" />

@@ -4,6 +4,8 @@
 <dict>
 	<key>NSCameraUsageDescription</key>
 	<string>This app needs access to the camera to take photos.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+<string>Picture Picker uses photo library</string>
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>

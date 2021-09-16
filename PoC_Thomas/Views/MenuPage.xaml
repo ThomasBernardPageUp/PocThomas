@@ -1,20 +1,36 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <ContentPage x:Name="page"
     xmlns="http://xamarin.com/schemas/2014/forms"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:converters="clr-namespace:PoC_Thomas.Converters"
     x:Class="PoC_Thomas.Views.MenuPage">
+
+
+        <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:SexToColorConverter x:Key="SexToColorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+
         <StackLayout Margin="10">
         <Label Margin="0,20" FontSize="30" Text="Rick and Morty character's" HorizontalTextAlignment="Center"></Label>
         <Button Command="{Binding ProfileCommand}" Text="Access to my profile" BackgroundColor="DodgerBlue" TextColor="White"></Button>
 
-        <StackLayout Orientation="Horizontal">
-            <Label TextDecorations="Underline" Margin="10" Text="{Binding NumberOfResults, StringFormat='We found {0} result(s) :'}"></Label>
-        </StackLayout>
+
+
+        <SearchBar Placeholder="Search one character"></SearchBar>
+            <StackLayout Orientation="Horizontal" BackgroundColor="AliceBlue">
+                <Picker Title="Choose one sex" HorizontalOptions="FillAndExpand"></Picker>
+                <Button Text="Search" BackgroundColor="DodgerBlue" TextColor="White" Padding="30, 0"></Button>
+            </StackLayout>
+            <Label TextDecorations="Underline" Margin="10" Text="{Binding Characters.Count, StringFormat='We found {0} result(s) :'}"></Label>
+
 
          <CollectionView ItemsSource="{Binding Characters}" Margin="10, 0" x:Name="list">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <StackLayout Orientation="Horizontal" BackgroundColor="{Binding Background}">
+                    <StackLayout Orientation="Horizontal" BackgroundColor="{Binding Gender, Converter={x:StaticResource Key=SexToColorConverter}}">
+
                        <Image Source="{Binding Image}"></Image>
                        <Label Text="{Binding Name}" VerticalTextAlignment="Center"></Label>
 

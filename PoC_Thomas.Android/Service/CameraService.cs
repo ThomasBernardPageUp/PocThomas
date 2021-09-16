@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Plugin.Media.Abstractions;
 using PoC_Thomas.Services.Interface;
 using Xamarin.Forms;
 
@@ -11,10 +13,15 @@ namespace PoC_Thomas.Droid.Service
         {
         }
 
-        public void TakePictureAsync()
-        {
-            Console.WriteLine("android");
-        }
 
+        public async Task<Task<MediaFile>> TakePictureAsync()
+        {
+            var photo = Plugin.Media.CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions() { });
+            Console.WriteLine("Android");
+
+
+            return photo;
+
+        }
     }
 }

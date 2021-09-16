@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using PageUpX.Core.Log;
+using PageUpX.DataAccess.DataAccessor;
 using PoC_Thomas.Commons;
 using PoC_Thomas.Helpers;
 using PoC_Thomas.Helpers.Interface;
@@ -45,6 +46,8 @@ namespace PoC_Thomas
             {
                 RegisterServices(containerRegistry);
                 RegisterHelpers(containerRegistry);
+                RegisterDataAscessor(containerRegistry);
+                RegisterRepositories(containerRegistry);
 
                 //Register for navigation is always the last registration method
                 RegisterForNavigation(containerRegistry);
@@ -71,11 +74,19 @@ namespace PoC_Thomas
             //containerRegistry.RegisterSingleton<ICameraService, >();
 
 
-            containerRegistry.RegisterSingleton<IUserRepository, UserRepository>();
+
 
 
             containerRegistry.RegisterSingleton<IPuxLogger, ConsoleLoggerService>();
+        }
+        private void RegisterDataAscessor(IContainerRegistry containerRegistry)
+        {
+            // containerRegistry.RegisterSingleton<IPuxSimpleDataAccessor<UserEntity>, PuxSimpleDataAccessorBase<UserEntity>>();
+        }
 
+        private void RegisterRepositories(IContainerRegistry containerRegistry)
+        {
+            //containerRegistry.RegisterSingleton<IUserRepository, UserRepository>();
         }
 
         private void RegisterForNavigation(IContainerRegistry containerRegistry)

@@ -17,10 +17,9 @@ namespace PoC_Thomas.ViewModels
     {
         
         private IDataTransferHelper _dataTransferHelper;
-        public DelegateCommand<CharacterDownDTO> CharacterTappedCommand { get; private set; }
+        public DelegateCommand<CharacterDownDTO> CharacterTappedCommand { get; set; }
         public Command ProfileCommand { get; set; }
-        public Command PrevPage { get; set; }
-        public Command NexPage { get; set; }
+
 
 
         // Constructor 
@@ -28,8 +27,8 @@ namespace PoC_Thomas.ViewModels
         {
             _dataTransferHelper = dataTransfer;
             CharacterTappedCommand = new DelegateCommand<CharacterDownDTO>(ShowCharacter);
-            PrevPage = new Command(() => { Page--; LoadCharacters(); });
-            NexPage = new Command(() => { Page++; LoadCharacters(); });
+            AllCharacters = new List<CharacterDownDTO>();
+     
 
             ProfileCommand = new Command(ProfilePage);
         }
@@ -50,8 +49,6 @@ namespace PoC_Thomas.ViewModels
         // This function show the character's page 
         public async void ShowCharacter(CharacterDownDTO character)
         {
-            // var parameter = new NavigationParameters { { "character", character } };
-
             CharacterEntity characterEntity = new CharacterEntity(character.Id, App.UserId, character.Name, character.Image, character.Species, character.Origin.Name);
             var parameter = new NavigationParameters { { "character", characterEntity } };
 
@@ -63,60 +60,27 @@ namespace PoC_Thomas.ViewModels
         // Load all characters from API
         public async void LoadCharacters()
         {
-            if(this.Page > 34)
-            {
-                this.Page = 34;
-            }
-            else
-            {
-                if(this.Page < 1)
-                {
-                    this.Page = 1;
-                }
-            }
             
-            string url = "https://rickandmortyapi.com/api/character?page=" + this.Page;
-            var result = await _dataTransferHelper.SendClientAsync<CharactersDownDTO>(url, HttpMethod.Get);
+            
+            string url = "https://rickandmortyapi.com/api/character?page=";
 
-
-            if (result.IsSuccess)
+            for (int i = 1; i < 35; i++)
             {
-                Characters = result.Result.Results;
+                var result = await _dataTransferHelper.SendClientAsync<CharactersDownDTO>(url + i, HttpMethod.Get);
 
-                if (Characters != null)
+                if (result.IsSuccess)
                 {
-                    NumberOfResults = result.Result.Info.Count;
+                    AllCharacters.AddRange(result.Result.Results);
                 }
                 else
                 {
-                    NumberOfResults = 0;
+                    Console.WriteLine("call error");
                 }
+
             }
 
-
-
-
-            // We set the bacakground color :
-            // Blue if male
-            // Pink if female
-            // White if other
-            foreach (CharacterDownDTO character in Characters)
-            {
-                Color bg = Color.Default;
-                switch (character.Gender)
-                {
-                    case "Male":
-                        bg = Color.MediumAquamarine;
-                        break;
-                    case "Female":
-                        bg = Color.MediumOrchid;
-                        break;
-                    default:
-                        bg = Color.NavajoWhite;
-                        break;
-                }
-                character.Background = bg.ToHex();
-            }
+            Characters = AllCharacters;
+            
         }
 
 
@@ -129,25 +93,19 @@ namespace PoC_Thomas.ViewModels
 
         #endregion
 
-        private int _page;
-        public int Page
-        {
-            get { return _page; }
-            set { SetProperty(ref _page, value); }
-        }
 
         private List<CharacterDownDTO> _charaters;
         public List<CharacterDownDTO> Characters
         {
             get { return _charaters; }
             set { SetProperty(ref _charaters, value); }
-        }
+        }  
 
-        private int _numberOfResults;
-        public int NumberOfResults
+        private List<CharacterDownDTO> _allCharacters;
+        public List<CharacterDownDTO> AllCharacters
         {
-            get { return _numberOfResults; }
-            set { SetProperty(ref _numberOfResults, value); }
+            get { return _allCharacters; }
+            set { SetProperty(ref _allCharacters, value); }
         }
     }
 }
