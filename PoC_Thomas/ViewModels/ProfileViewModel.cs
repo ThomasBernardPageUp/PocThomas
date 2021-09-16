@@ -20,8 +20,8 @@ namespace PoC_Thomas.ViewModels
 
         public ProfileViewModel(INavigationService navigationService, ISqliteNetHelper sqliteNetHelper) : base(navigationService, sqliteNetHelper)
         {
-            DeleteCommand = new DelegateCommand<CharacterEntity>(DeleteChar);
-            ViewCommand = new DelegateCommand<CharacterEntity>(ViewChar);
+            DeleteCommand = new DelegateCommand<CharacterEntity>(DeleteCharacter);
+            ViewCommand = new DelegateCommand<CharacterEntity>(ViewCharacter);
         }
 
 
@@ -37,13 +37,13 @@ namespace PoC_Thomas.ViewModels
 
 
         // This function delete a character from the database
-        public async void DeleteChar(CharacterEntity character)
+        public async void DeleteCharacter(CharacterEntity character)
         {
             await SqliteNetHelper.DeleteCharacter(character.Id, App.UserId);
             Characters.Remove(character);
         }
 
-        public async void ViewChar(CharacterEntity character)
+        public async void ViewCharacter(CharacterEntity character)
         {
             var parameter = new NavigationParameters { { "character", character } };
             await NavigationService.NavigateAsync(Constants.CharacterPage, parameter);

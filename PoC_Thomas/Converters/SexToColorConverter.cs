@@ -17,8 +17,14 @@ namespace PoC_Thomas.Converters
                     case "Female":
                         color = Color.MediumOrchid;
                         break;
-                    default:
+                    case "unknown":
+                        color = Color.AliceBlue;
+                        break;
+                    case "Genderless":
                         color = Color.NavajoWhite;
+                    break;
+                    default:
+                        color = Color.Red;
                         break;
                 }
             return color.ToHex();

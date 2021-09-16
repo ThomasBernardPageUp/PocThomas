@@ -60,7 +60,7 @@ namespace PoC_Thomas.ViewModels
 
         public async void TakePicture()
         {
-            var photo = await _cameraService.TakePictureAsync();
+            PictureUrl = (ImageSource)await _cameraService.TakePhotoAsync();
 
         }
 
@@ -84,7 +84,7 @@ namespace PoC_Thomas.ViewModels
                     else
                     {
                         // await SqliteNetHelper.CreateUser(this.Username, this.Password, this.PictureUrl);
-                        await SqliteNetHelper.CreateUser(this.Username, this.Password, "");
+                        await SqliteNetHelper.CreateUser(this.Username, this.Password, PictureUrl.ToString());
 
                         await DoBackCommand();
                     }

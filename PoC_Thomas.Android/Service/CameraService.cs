@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using Plugin.Media.Abstractions;
 using PoC_Thomas.Services.Interface;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 [assembly: Dependency(typeof(PoC_Thomas.Droid.Service.CameraService))]
@@ -9,19 +11,39 @@ namespace PoC_Thomas.Droid.Service
 {
     public class CameraService : ICameraService
     {
-        public CameraService()
+
+
+        public async Task<object> TakePhotoAsync()
         {
+            try
+            {
+                var photo = await MediaPicker.CapturePhotoAsync();
+                await LoadPhotoAsync(photo);
+                
+                return ImageSource.FromFile(photo.FullPath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return null;
+            }
+
+            
         }
 
-
-        public async Task<Task<MediaFile>> TakePictureAsync()
+        async Task LoadPhotoAsync(FileResult photo)
         {
-            var photo = Plugin.Media.CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions() { });
-            Console.WriteLine("Android");
-
-
-            return photo;
-
+            // canceled
+            if (photo != null)
+            {
+                // save the file into local storage
+                var newFile = Path.Combine(FileSystem.CacheDirectory, photo.FileName);
+                using (var stream = await photo.OpenReadAsync())
+                using (var newStream = File.OpenWrite(newFile))
+                await stream.CopyToAsync(newStream);
+            }
         }
+
+        
     }
 }

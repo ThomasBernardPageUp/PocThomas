@@ -11,6 +11,7 @@ using PoC_Thomas.Helpers;
 using PoC_Thomas.Models.Entities;
 using Prism.Commands;
 using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace PoC_Thomas.ViewModels
 {
@@ -22,8 +23,8 @@ namespace PoC_Thomas.ViewModels
         public DelegateCommand<CharacterDownDTO> CharacterTappedCommand { get; set; }
         public Command ProfileCommand { get; set; }
         public Command SearchCommand { get; set; }
+
         public string SearchedCharacterName { get; set; }
-        public List<string> AllGenders { get; set; }
         public string SelectedGender { get; set; }
 
         // Constructor 
@@ -38,7 +39,6 @@ namespace PoC_Thomas.ViewModels
 
 
             AllCharacters = new List<CharacterDownDTO>();
-            AllGenders = new List<string>() { "All", "Male", "Female", "unknown" };
         }
 
 
@@ -63,7 +63,7 @@ namespace PoC_Thomas.ViewModels
             await NavigationService.NavigateAsync(Constants.CharacterPage, parameter);
         }
         
-        public async void SearchCharacters()
+        public void SearchCharacters()
         {
             // 1) We reset the list
             Characters = AllCharacters;
@@ -88,7 +88,6 @@ namespace PoC_Thomas.ViewModels
         public async void LoadCharacters()
         {
             
-            
             string url = "https://rickandmortyapi.com/api/character?page=";
 
             // 1 to 34
@@ -107,8 +106,12 @@ namespace PoC_Thomas.ViewModels
 
             }
 
+            // We get all diffents genders
+            List<string> res = AllCharacters.Select(c => c.Gender).Distinct().ToList();
+            AllGenders = new ObservableCollection<string>(res);
+            AllGenders.Insert(0, "All");
+
             Characters = AllCharacters;
-            
         }
 
 
@@ -121,6 +124,12 @@ namespace PoC_Thomas.ViewModels
 
         #endregion
 
+        private ObservableCollection<string> _allGenders;
+        public ObservableCollection<string> AllGenders
+        {
+            get { return _allGenders; }
+            set { SetProperty(ref _allGenders, value); }
+        }
 
         private List<CharacterDownDTO> _charaters;
         public List<CharacterDownDTO> Characters
