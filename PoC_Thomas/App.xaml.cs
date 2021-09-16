@@ -15,6 +15,7 @@ using PageUpX.DataAccess.SQLite;
 using Prism;
 using Prism.Ioc;
 using Xamarin.Forms;
+using PoC_Thomas.Services;
 
 namespace PoC_Thomas
 {
@@ -72,6 +73,7 @@ namespace PoC_Thomas
             //Example :
             //containerRegistry.RegisterSingleton<ILoginService, LoginService>();
 
+            containerRegistry.RegisterSingleton<IAuthentificationService, AuthentificationService>();
             containerRegistry.RegisterSingleton<IPuxLogger, ConsoleLoggerService>();
         }
 

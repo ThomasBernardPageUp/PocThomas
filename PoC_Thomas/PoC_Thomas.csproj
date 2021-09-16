@@ -24,6 +24,7 @@
     <PackageReference Include="PageUpX.Core" Version="2.1.0" />
     <PackageReference Include="PageUpX.DataAccess" Version="2.1.0" />
     <PackageReference Include="PageUpX.DataAccess.SQLite" Version="2.1.0" />
+    <PackageReference Include="Plugin.Fingerprint" Version="2.1.4" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Newtonsoft.Json" />
@@ -45,6 +46,7 @@
     <None Remove="PageUpX.Core" />
     <None Remove="PageUpX.DataAccess" />
     <None Remove="PageUpX.DataAccess.SQLite" />
+    <None Remove="Plugin.Fingerprint" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="POC_Thomas_Models\Class1.cs" />

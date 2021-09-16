@@ -8,6 +8,8 @@ using Prism.Navigation;
 using System.IO;
 using SQLite;
 using PoC_Thomas.Models.Entities;
+using Plugin.Fingerprint;
+using Plugin.Fingerprint.Abstractions;
 
 namespace PoC_Thomas.ViewModels
 {
@@ -31,6 +33,9 @@ namespace PoC_Thomas.ViewModels
         protected override async Task OnNavigatedToAsync(INavigationParameters parameters)
         {
             await base.OnNavigatedToAsync(parameters);
+
+
+           
         }
 
 
@@ -38,7 +43,7 @@ namespace PoC_Thomas.ViewModels
         // This function verify the userand the password and connect the user .
         public async void VerifyLogin()
         {
-            if(this.Username == null || this.Password == null)
+            if(string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
             {
                 await App.Current.MainPage.DisplayAlert("Error", "Please enter values in entries", "Ok");
                 Console.WriteLine("No value in entries");

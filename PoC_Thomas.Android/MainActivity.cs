@@ -9,6 +9,7 @@ using Prism.Ioc;
 using System.Threading.Tasks;
 using System.IO;
 using Android.Content;
+using Plugin.Fingerprint;
 
 namespace PoC_Thomas.Droid
 {
@@ -26,6 +27,7 @@ namespace PoC_Thomas.Droid
             base.OnCreate(savedInstanceState);
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
+            CrossFingerprint.SetCurrentActivityResolver(() => Xamarin.Essentials.Platform.CurrentActivity);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             Instance = this;
 
