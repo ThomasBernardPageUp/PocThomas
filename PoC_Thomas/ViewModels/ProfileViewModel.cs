@@ -32,6 +32,7 @@ namespace PoC_Thomas.ViewModels
 
             Characters = new ObservableCollection<CharacterEntity>(await SqliteNetHelper.GetCharacters(App.UserId));
             UserEntity = await SqliteNetHelper.GetUser(App.UserId);
+            PictureUrl = UserEntity.Picture;
         }
         #endregion
 
@@ -47,6 +48,14 @@ namespace PoC_Thomas.ViewModels
         {
             var parameter = new NavigationParameters { { "character", character } };
             await NavigationService.NavigateAsync(Constants.CharacterPage, parameter);
+        }
+        
+
+        private ImageSource _pictureUrl;
+        public ImageSource PictureUrl
+        {
+            get { return _pictureUrl; }
+            set { SetProperty(ref _pictureUrl, value); }
         }
 
         private UserEntity _userEntity;

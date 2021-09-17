@@ -24,7 +24,7 @@
                 <Entry Text="{Binding UserEntity.Password}" HorizontalOptions="FillAndExpand" IsEnabled="False"></Entry>
             </StackLayout>
         
-            <Image Margin="5, 0" Grid.RowSpan="3" Grid.Column="1" Source="{Binding UserEntity.Picture}" BackgroundColor="Black"></Image>
+            <Image Margin="5, 0" Grid.RowSpan="3" Grid.Column="1" Source="{Binding PictureUrl}" BackgroundColor="Black"></Image>
             
         </Grid>
         

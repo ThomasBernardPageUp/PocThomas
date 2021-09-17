@@ -12,15 +12,15 @@ namespace PoC_Thomas.Droid.Service
     public class CameraService : ICameraService
     {
 
-
-        public async Task<object> TakePhotoAsync()
+        // Return the image Path
+        public async Task<string> TakePhotoAsync()
         {
             try
             {
                 var photo = await MediaPicker.CapturePhotoAsync();
                 await LoadPhotoAsync(photo);
                 
-                return ImageSource.FromFile(photo.FullPath);
+                return ImageSource.FromFile(photo.FullPath).ToString().Remove(0, 6);
             }
             catch (Exception ex)
             {

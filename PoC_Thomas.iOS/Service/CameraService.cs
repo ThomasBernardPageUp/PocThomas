@@ -13,13 +13,10 @@ namespace PoC_Thomas.iOS.Service
     public class CameraService : ICameraService
     {
 
-
-        public async Task<object> TakePhotoAsync()
+        public async Task<string> TakePhotoAsync()
         {
             Console.WriteLine("Camera not available on simulator");
             return null;
         }
-
-
     }
 }

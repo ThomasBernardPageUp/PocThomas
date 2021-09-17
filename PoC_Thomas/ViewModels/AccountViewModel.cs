@@ -53,21 +53,21 @@ namespace PoC_Thomas.ViewModels
             {
                 if (ImageSource.FromStream(() => stream) != null)
                 {
-                    PictureUrl = ImageSource.FromStream(() => stream);
+                    PictureUrl =  ImageSource.FromStream(() => stream).ToString().Remove(0, 6);
+                    
                 }
             }
         }
 
         public async void TakePicture()
         {
-            PictureUrl = (ImageSource)await _cameraService.TakePhotoAsync();
-
+            PictureUrl = await _cameraService.TakePhotoAsync();
         }
 
         // This function create a new UserEntity and save it in the Database
         public async void CreateAccount()
         {
-            if(Username == "" || Username == " " || Password == "" || Password == " ")
+            if(string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
             {
                 await App.Current.MainPage.DisplayAlert("Error", "please enter one username and one password", "Ok");
             }
@@ -84,7 +84,7 @@ namespace PoC_Thomas.ViewModels
                     else
                     {
                         // await SqliteNetHelper.CreateUser(this.Username, this.Password, this.PictureUrl);
-                        await SqliteNetHelper.CreateUser(this.Username, this.Password, PictureUrl.ToString());
+                        await SqliteNetHelper.CreateUser(this.Username, this.Password, PictureUrl);
 
                         await DoBackCommand();
                     }
@@ -96,8 +96,8 @@ namespace PoC_Thomas.ViewModels
             } 
         }
 
-        private ImageSource _pictureUrl;
-        public ImageSource PictureUrl
+        private string _pictureUrl;
+        public string PictureUrl
         {
             get { return _pictureUrl; }
             set { SetProperty(ref _pictureUrl, value); }
