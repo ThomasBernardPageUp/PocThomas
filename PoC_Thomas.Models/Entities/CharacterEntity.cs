@@ -1,10 +1,9 @@
 ﻿using System;
-using SQLite.Net.Attributes;
+using SQLite;
 
 namespace PoC_Thomas.Models.Entities
 {
 
-    [Table("CharacterEntity")]
     public class CharacterEntity
     {
         [PrimaryKey, NotNull]
@@ -17,6 +16,16 @@ namespace PoC_Thomas.Models.Entities
 
         public CharacterEntity()
         {
+        }
+
+        public CharacterEntity(long id, long idCreator, string name, string image, string species, string origin):this()
+        {
+            this.Id = id;
+            this.IdCreator = idCreator;
+            this.Name = name;
+            this.Image = image;
+            this.Species = species;
+            this.Origin = origin;
         }
     }
 }

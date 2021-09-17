@@ -8,22 +8,24 @@ using Prism.Navigation;
 using System.IO;
 using SQLite;
 using PoC_Thomas.Models.Entities;
+using Plugin.Fingerprint;
+using Plugin.Fingerprint.Abstractions;
 
 namespace PoC_Thomas.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
-        public Command CmdLogin { get; set; }
-        public Command CmdAccount { get; set; }
+        public Command LoginCommand { get; set; }
+        public Command CreateAccountCommand { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
 
 
         // Constructor
-        public LoginViewModel(INavigationService navigationService) : base(navigationService)
+        public LoginViewModel(INavigationService navigationService, ISqliteNetHelper sqliteNetHelper) : base(navigationService, sqliteNetHelper)
         {
-            this.CmdLogin = new Command(CommandLogin);
-            this.CmdAccount = new Command(CommandAccount);
+            this.LoginCommand = new Command(VerifyLogin);
+            this.CreateAccountCommand = new Command(AccountPage);
         }
 
 
@@ -31,22 +33,24 @@ namespace PoC_Thomas.ViewModels
         protected override async Task OnNavigatedToAsync(INavigationParameters parameters)
         {
             await base.OnNavigatedToAsync(parameters);
-            string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "MyData.db");
-            var db = new SQLiteAsyncConnection(dbPath);
 
-            await db.ExecuteAsync("CREATE TABLE IF NOT EXISTS 'UserEntity'('Id' INTEGER NOT NULL, 'Username' TEXT,'Password' TEXT, 'Picture' TEXT,PRIMARY KEY(\"Id\" AUTOINCREMENT));");
-            await db.ExecuteAsync("CREATE TABLE IF NOT EXISTS 'CharacterEntity' ('Id' INTEGER NOT NULL, 'IdCreator' INTEGER NOT NULL, 'Name' TEXT, 'Image' TEXT, 'Species' TEXT, 'Origin' TEXT, PRIMARY KEY(\"Id\",\"IdCreator\") );");
+
+           
         }
 
 
 
         // This function verify the userand the password and connect the user .
-        public async void CommandLogin()
+        public async void VerifyLogin()
         {
-            var db = new SQLiteAsyncConnection(App.DatabasePath);
+            if(string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Please enter values in entries", "Ok");
+                Console.WriteLine("No value in entries");
+                return;
+            }
 
-            UserEntity user = await db.Table<UserEntity>().Where(u => u.Username == this.Username && u.Password == this.Password).FirstOrDefaultAsync();
-            Console.WriteLine(db.Table<UserEntity>().ToString());
+            UserEntity user = await SqliteNetHelper.UserConnection(this.Username, this.Password);
 
             if (user != null)
             {
@@ -64,7 +68,7 @@ namespace PoC_Thomas.ViewModels
 
 
         // Go to the accountPage
-        public async void CommandAccount()
+        public async void AccountPage()
         {
             await NavigationService.NavigateAsync(Constants.AccountPage);
         }

@@ -5,9 +5,9 @@ using Xamarin.Forms;
 
 namespace PoC_Thomas.Views
 {
-    public partial class SavedPage : ContentPage
+    public partial class ProfilePage : ContentPage
     {
-        public SavedPage()
+        public ProfilePage()
         {
             InitializeComponent();
         }

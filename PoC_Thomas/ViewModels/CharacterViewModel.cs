@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using PoC_Thomas.Helpers.Interface;
 using PoC_Thomas.Models.Entities;
 using Prism.Navigation;
 using SQLite;
@@ -11,14 +12,12 @@ namespace PoC_Thomas.ViewModels
 {
     public class CharacterViewModel : BaseViewModel
     {
-        public Command CmdSave { get; set; }
-        public CharacterEntity CharacterEntity { get; set; }
+        public Command SaveCommand { get; set; }
 
 
-
-        public CharacterViewModel(INavigationService navigationService) : base(navigationService)
+        public CharacterViewModel(INavigationService navigationService, ISqliteNetHelper sqliteNetHelper) : base(navigationService, sqliteNetHelper)
         {
-            CmdSave = new Command(SaveCharacter);
+            SaveCommand = new Command(SaveCharacter);
         }
 
 
@@ -29,7 +28,7 @@ namespace PoC_Thomas.ViewModels
 
             if (parameters.ContainsKey("character"))
             {
-                Character = parameters.GetValue<CharacterDownDTO>("character");
+                Character = parameters.GetValue<CharacterEntity>("character");
             }
         }
         #endregion
@@ -38,34 +37,18 @@ namespace PoC_Thomas.ViewModels
         // With this function we save the character in the Database
         public async void SaveCharacter()
         {
-
-            var db = new SQLiteAsyncConnection(App.DatabasePath);
-
             try
             {
-                this.CharacterEntity = new CharacterEntity()
-                {
-                    Id = _character.Id,
-                    IdCreator = App.UserId,
-                    Name = _character.Name,
-                    Image = _character.Image,
-                    Species = _character.Species,
-                    Origin = _character.Origin.Name
-                };
-
-                string query = "SELECT * FROM CharacterEntity WHERE CharacterEntity.Id =" + this.CharacterEntity.Id + " AND CharacterEntity.IdCreator = " + this.CharacterEntity.IdCreator;
-                var result = await db.FindWithQueryAsync<CharacterEntity>(query);
-
+                var result = await SqliteNetHelper.CheckCharacter(Character.Id, App.UserId);
 
                 // if the character is already saved for this user
-                if (result != null)
+                if (result)
                 {
                     await App.Current.MainPage.DisplayAlert("Alert", "This character is already registered, if you register it again it will delete the old one", "Ok");
-                    await db.ExecuteAsync("DELETE FROM CharacterEntity WHERE Id =" + result.Id + " AND IdCreator =" + result.IdCreator);
+                    await SqliteNetHelper.DeleteCharacter(Character.Id, App.UserId);
                 }
 
-                await db.InsertAsync(CharacterEntity); // Insert the character into the db
-                Console.WriteLine("Character saved");
+                await SqliteNetHelper.db.InsertAsync(Character); // Insert the character into the db
             }
             catch(Exception ex)
             {
@@ -74,8 +57,8 @@ namespace PoC_Thomas.ViewModels
             await DoBackCommand();
         }
 
-        private CharacterDownDTO _character;
-        public CharacterDownDTO Character
+        private CharacterEntity _character;
+        public CharacterEntity Character
         {
             get { return _character; }
             set { SetProperty(ref _character, value); }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using PoC_Thomas.Helpers.Interface;
 using PoC_Thomas.Models.Entities;
 using Prism.Mvvm;
 using Prism.Navigation;
@@ -10,21 +11,18 @@ using SQLite;
 namespace PoC_Thomas.ViewModels
 {
     public class BaseViewModel : BindableBase, INavigatedAware, IInitializeAsync
-    {
-        public BaseViewModel(INavigationService navigationService)
-        {
-            NavigationService = navigationService;
-        }
-
-
-        #region Properties
-
+    { 
         // Yoou can add this kind of property to reuse it in all other ViewModels.
         protected INavigationService NavigationService;
+        protected ISqliteNetHelper SqliteNetHelper;
         protected UserEntity User;
 
-        #endregion
 
+        public BaseViewModel(INavigationService navigationService, ISqliteNetHelper sqliteNetHelper)
+        {
+            NavigationService = navigationService;
+            SqliteNetHelper = sqliteNetHelper;
+        }
 
         // Yoou can add this kind of command to reuse it in all other ViewModels
         protected virtual async Task DoBackCommand()

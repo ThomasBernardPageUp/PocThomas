@@ -1,22 +1,27 @@
 ﻿using System;
 using System.IO;
+using PageUpX.Core.Log;
+using PageUpX.DataAccess.DataAccessor;
 using PoC_Thomas.Commons;
 using PoC_Thomas.Helpers;
 using PoC_Thomas.Helpers.Interface;
 using PoC_Thomas.Models.Entities;
+using PoC_Thomas.Repositories;
+using PoC_Thomas.Repositories.Interface;
+using PoC_Thomas.Services.Interface;
 using PoC_Thomas.ViewModels;
 using PoC_Thomas.Views;
+using PageUpX.DataAccess.SQLite;
 using Prism;
 using Prism.Ioc;
 using Xamarin.Forms;
+using PoC_Thomas.Services;
 
 namespace PoC_Thomas
 {
     public partial class App
     {
         public static long UserId {get; set;}
-        public static string DatabasePath { get; set; }
-
 
         public App(IPlatformInitializer initializer): base(initializer)
         {
@@ -41,13 +46,15 @@ namespace PoC_Thomas
         {
             try
             {
-                RegisterServices(containerRegistry);
                 RegisterHelpers(containerRegistry);
+                RegisterServices(containerRegistry);
+                RegisterDataAscessor(containerRegistry);
+                RegisterRepositories(containerRegistry);
 
                 //Register for navigation is always the last registration method
                 RegisterForNavigation(containerRegistry);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
@@ -57,12 +64,39 @@ namespace PoC_Thomas
         {
             containerRegistry.RegisterSingleton<IHttpClientHelper, HttpClientHelper>();
             containerRegistry.RegisterSingleton<IDataTransferHelper, DataTransferHelper>();
+            containerRegistry.RegisterSingleton<ISqliteNetHelper, SqliteNetHelper>();
+
         }
 
         private void RegisterServices(IContainerRegistry containerRegistry)
         {
-            //Example  
+            //Example :
             //containerRegistry.RegisterSingleton<ILoginService, LoginService>();
+
+            containerRegistry.RegisterSingleton<IStorageService, StorageService>();
+            containerRegistry.RegisterSingleton<IAuthentificationService, AuthentificationService>();
+            containerRegistry.RegisterSingleton<IPuxLogger, ConsoleLoggerService>();
+        }
+
+
+        private void RegisterDataAscessor(IContainerRegistry containerRegistry)
+        {
+            try
+            {
+                // containerRegistry.RegisterSingleton<IPuxSimpleDataAccessor<UserEntity>, PuxSimpleDataAccessorSQLite<UserEntity>>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("==========================================================");
+                Console.WriteLine(ex);
+                Console.WriteLine("==========================================================");
+
+            }
+        }
+
+        private void RegisterRepositories(IContainerRegistry containerRegistry)
+        {
+            containerRegistry.RegisterSingleton<IUserRepository, UserRepository>();
         }
 
         private void RegisterForNavigation(IContainerRegistry containerRegistry)
@@ -70,23 +104,22 @@ namespace PoC_Thomas
             containerRegistry.RegisterForNavigation<NavigationPage>(Constants.NavigationPage);
 
 
-
             //Here we register the page and the viewmodel to link them.
             //More, we had a name at this couple to reuse them more efficently.
+
+
             containerRegistry.RegisterForNavigation<LoginPage, LoginViewModel>(Constants.LoginPage);
             containerRegistry.RegisterForNavigation<MenuPage, MenuViewModel>(Constants.MenuPage);
             containerRegistry.RegisterForNavigation<CharacterPage, CharacterViewModel>(Constants.CharacterPage);
             containerRegistry.RegisterForNavigation<AccountPage, AccountViewModel>(Constants.AccountPage);
-            containerRegistry.RegisterForNavigation<SavedPage, SavedViewModel>(Constants.SavedPage);
-
+            containerRegistry.RegisterForNavigation<ProfilePage, ProfileViewModel>(Constants.ProfilePage);
+            containerRegistry.RegisterForNavigation<ProfilePage, ProfileViewModel>(Constants.ProfilePage);
         }
 
 
         protected override void OnStart()
         {
             base.OnStart();
-            DatabasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "MyData.db");
-
         }
 
         protected override void OnSleep()

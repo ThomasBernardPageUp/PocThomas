@@ -76,11 +76,30 @@
     <PackageReference Include="SQLite.Net.Async-PCL">
       <Version>3.1.1</Version>
     </PackageReference>
+    <PackageReference Include="Xam.Plugin.Media">
+      <Version>5.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="PageUpX.DataAccess.SQLite">
+      <Version>1.0.2</Version>
+    </PackageReference>
+    <PackageReference Include="PageUpX.DataAccess">
+      <Version>2.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="PageUpX.Core">
+      <Version>2.1.0</Version>
+    </PackageReference>
+    <PackageReference Include="Plugin.Fingerprint">
+      <Version>2.1.4</Version>
+    </PackageReference>
+    <PackageReference Include="Plugin.CurrentActivity">
+      <Version>2.1.0.4</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\CameraService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -105,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\drawable\" />
+    <Folder Include="Service\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PoC_Thomas\PoC_Thomas.csproj">
