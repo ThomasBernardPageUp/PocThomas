@@ -6,6 +6,6 @@ namespace PoC_Thomas.Services.Interface
 {
     public interface IStorageService
     {
-        Task<Stream> GetImageStreamAsync();
+        Task<string> PickImagesAsync();
     }
 }

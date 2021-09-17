@@ -26,13 +26,13 @@ namespace PoC_Thomas.ViewModels
 
 
         // Constructor
-        public AccountViewModel(INavigationService navigationService, ISqliteNetHelper sqliteNetHelper) : base(navigationService, sqliteNetHelper)
+        public AccountViewModel(INavigationService navigationService, ISqliteNetHelper sqliteNetHelper, IStorageService storageService) : base(navigationService, sqliteNetHelper)
         {
             this.CreateCommand = new Command(CreateAccount);
             this.PictureCommand = new Command(TakePicture);
             this.FileCommand = new Command(LoadFile);
             this._cameraService = DependencyService.Get<ICameraService>();
-            this._storageService = DependencyService.Get<IStorageService>();
+            this._storageService = storageService;
             //this._userRepository = userRepository;
         }
 
@@ -48,20 +48,17 @@ namespace PoC_Thomas.ViewModels
 
         public async void LoadFile()
         {
-            Stream stream = await _storageService.GetImageStreamAsync();
-            if (stream != null)
-            {
-                if (ImageSource.FromStream(() => stream) != null)
-                {
-                    PictureUrl =  ImageSource.FromStream(() => stream).ToString().Remove(0, 6);
-                    
-                }
-            }
+            PictureUrl = await _storageService.PickImagesAsync();
         }
 
         public async void TakePicture()
         {
             PictureUrl = await _cameraService.TakePhotoAsync();
+
+            if(PictureUrl == null)
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Camera not available", "retry");
+            }
         }
 
         // This function create a new UserEntity and save it in the Database

@@ -12,7 +12,7 @@ namespace PoC_Thomas.Droid.Service
     public class CameraService : ICameraService
     {
 
-        // Return the image Path
+
         public async Task<string> TakePhotoAsync()
         {
             try
@@ -43,7 +43,5 @@ namespace PoC_Thomas.Droid.Service
                 await stream.CopyToAsync(newStream);
             }
         }
-
-        
     }
 }

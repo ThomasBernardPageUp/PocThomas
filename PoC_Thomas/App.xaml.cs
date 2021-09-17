@@ -73,6 +73,7 @@ namespace PoC_Thomas
             //Example :
             //containerRegistry.RegisterSingleton<ILoginService, LoginService>();
 
+            containerRegistry.RegisterSingleton<IStorageService, StorageService>();
             containerRegistry.RegisterSingleton<IAuthentificationService, AuthentificationService>();
             containerRegistry.RegisterSingleton<IPuxLogger, ConsoleLoggerService>();
         }
