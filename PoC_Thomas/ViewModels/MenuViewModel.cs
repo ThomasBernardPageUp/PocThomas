@@ -36,9 +36,6 @@ namespace PoC_Thomas.ViewModels
             this.CharacterTappedCommand = new DelegateCommand<CharacterDownDTO>(ShowCharacter);
             this.SearchCommand = new Command(SearchCharacters);
             this.ProfileCommand = new Command(ProfilePage);
-
-
-            AllCharacters = new List<CharacterDownDTO>();
         }
 
 
@@ -87,7 +84,7 @@ namespace PoC_Thomas.ViewModels
         // Load all characters from API
         public async void LoadCharacters()
         {
-            
+            AllCharacters = new List<CharacterDownDTO>();
             string url = "https://rickandmortyapi.com/api/character?page=";
 
             // 1 to 34

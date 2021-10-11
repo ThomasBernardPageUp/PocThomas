@@ -16,8 +16,6 @@ namespace PoC_Thomas.Services
 
                 var mediaOptions = new PickMediaOptions() { PhotoSize = PhotoSize.Large };
                 var selectedPicture = await CrossMedia.Current.PickPhotoAsync(mediaOptions);
-                Console.WriteLine(selectedPicture.Path);
-                // selectedPicture. = ImageSource.FromStream( () => selectedPicture.GetStream() );
 
                 return selectedPicture.Path;
             }

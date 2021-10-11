@@ -18,11 +18,18 @@ namespace PoC_Thomas.ViewModels
         protected UserEntity User;
 
 
-        public BaseViewModel(INavigationService navigationService, ISqliteNetHelper sqliteNetHelper)
+        public BaseViewModel(INavigationService navigationService)
+        {
+            NavigationService = navigationService;
+        }
+
+        public BaseViewModel(INavigationService navigationService, ISqliteNetHelper sqliteNetHelper):this(navigationService)
         {
             NavigationService = navigationService;
             SqliteNetHelper = sqliteNetHelper;
         }
+
+        
 
         // Yoou can add this kind of command to reuse it in all other ViewModels
         protected virtual async Task DoBackCommand()

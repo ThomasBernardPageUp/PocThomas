@@ -48,6 +48,7 @@ namespace PoC_Thomas
             {
                 RegisterHelpers(containerRegistry);
                 RegisterServices(containerRegistry);
+
                 RegisterDataAscessor(containerRegistry);
                 RegisterRepositories(containerRegistry);
 
@@ -59,6 +60,7 @@ namespace PoC_Thomas
                 Console.WriteLine(ex);
             }
         }
+        
 
         private void RegisterHelpers(IContainerRegistry containerRegistry)
         {
@@ -83,7 +85,7 @@ namespace PoC_Thomas
         {
             try
             {
-                // containerRegistry.RegisterSingleton<IPuxSimpleDataAccessor<UserEntity>, PuxSimpleDataAccessorSQLite<UserEntity>>();
+                containerRegistry.RegisterSingleton<IPuxSimpleDataAccessor<UserEntity>, PuxSimpleDataAccessorSQLite<UserEntity>>();
             }
             catch (Exception ex)
             {
